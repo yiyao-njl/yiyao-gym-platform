@@ -1,4 +1,4 @@
-const mock = require('../../utils/mockData.js');
+﻿const mock = require('../../utils/mockData.js');
 const store = require('../../utils/store.js');
 const throttle = require('../../utils/throttle.js');
 const queryDomProperty = require('../../utils/queryDomProperty.js');
@@ -55,6 +55,15 @@ Page({
     });
   },
 
+  login() {
+    const popup = this.selectComponent('#loginPopup');
+    if (popup) popup.open({ scene: 'home' });
+  },
+
+  onLoginSuccess() {
+    // 登录成功后 onShow 会自动刷新状态
+  },
+
   goOpen(e) {
     store.setState({
       openMode: e.currentTarget.dataset.mode || 'walkIn',
@@ -73,16 +82,16 @@ Page({
   },
 
   goVenue(e) {
-    wx.navigateTo({ url: `/pages/venue/venue?id=${e.currentTarget.dataset.id}` });
+    wx.navigateTo({ url: /pages/venue/venue?id= });
   },
 
   goActivity(e) {
-    wx.navigateTo({ url: `/pages/activity/activity?id=${e.currentTarget.dataset.id}` });
+    wx.navigateTo({ url: /pages/activity/activity?id= });
   },
 
   onSwiperTap() {
     const activity = this.data.activities[this.data.currentIndex % this.data.activities.length];
-    if (activity) wx.navigateTo({ url: `/pages/activity/activity?id=${activity.id}` });
+    if (activity) wx.navigateTo({ url: /pages/activity/activity?id= });
   },
 
   onSwiperImageLoad(e) {
@@ -140,8 +149,8 @@ Page({
   onImageError(e) {
     const field = e.currentTarget.dataset.field;
     const index = e.currentTarget.dataset.index;
-    if (field === 'banners') this.setData({ [`banners[${index}].image`]: this.data.fallbackImage });
-    if (field === 'venues') this.setData({ [`hotVenues[${index}].image`]: this.data.fallbackImage });
-    if (field === 'activities') this.setData({ [`activities[${index}].image`]: this.data.fallbackImage });
+    if (field === 'banners') this.setData({ [anners[].image]: this.data.fallbackImage });
+    if (field === 'venues') this.setData({ [hotVenues[].image]: this.data.fallbackImage });
+    if (field === 'activities') this.setData({ [ctivities[].image]: this.data.fallbackImage });
   }
 });

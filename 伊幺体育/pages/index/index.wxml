@@ -1,4 +1,4 @@
-<view class="page index-page">
+﻿<view class="page index-page">
   <view class="swiper-container">
     <view class="swiper-background">
       <block wx:for="{{images}}" wx:key="index">
@@ -25,11 +25,6 @@
     >
       <block wx:for="{{images}}" wx:key="index">
         <swiper-item class="swiper-item" data-index="{{index}}">
-          <!-- <image
-            src="{{item.url || fallbackImage}}"
-            class="swiper-imgs"
-            mode="aspectFill"
-          /> -->
           <text>{{index}}</text>
           <view wx:if="{{item.loading}}" class="swiper-item-loading">
             <loading></loading>
@@ -53,14 +48,15 @@
           <text class="exp">{{user.exp}}/{{user.nextExp}}</text>
         </view>
       </view>
-      <view class="asset">
+      <view wx:if="{{loggedIn}}" class="asset">
         <text>伊幺币</text>
-        <text class="asset-num">{{loggedIn ? user.coins : 0}}</text>
+        <text class="asset-num">{{user.coins}}</text>
       </view>
-      <view class="asset">
+      <view wx:if="{{loggedIn}}" class="asset">
         <text>优惠券</text>
-        <text class="asset-num">{{loggedIn ? user.coupons : 0}}</text>
+        <text class="asset-num">{{user.coupons}}</text>
       </view>
+      <button wx:else class="login-btn" catchtap="login">注册/登录</button>
     </view>
   </view>
 
@@ -120,4 +116,6 @@
     </block>
   </view>
   </view>
+
+  <login-popup id="loginPopup" bindsuccess="onLoginSuccess"></login-popup>
 </view>

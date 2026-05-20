@@ -1,4 +1,4 @@
-const store = require('../../utils/store.js');
+﻿const store = require('../../utils/store.js');
 
 Page({
   data: {
@@ -7,7 +7,8 @@ Page({
     profileSub: '微信授权后查看会员权益',
     progressPercent: 0,
     expGap: 0,
-    loginLoading: false
+    loginLoading: false,
+    pendingLoginAction: ''
   },
 
   onShow() {
@@ -25,35 +26,50 @@ Page({
   },
 
   login() {
-    wx.navigateTo({ url: '/pages/phoneLogin/phoneLogin' });
+    const popup = this.selectComponent('#loginPopup');
+    if (popup) popup.open({ scene: 'mine' });
   },
 
-  logout() {
-    wx.navigateTo({ url: '/pages/accountManage/accountManage' });
+  onLoginSuccess() {
+    const action = this.data.pendingLoginAction;
+    this.setData({ pendingLoginAction: '' });
+    if (action === 'editProfile') this.editProfile();
+    if (action === 'goMember') this.goMember();
+    if (action === 'goCoupon') this.goCoupon();
+    if (action === 'goExpDetail') this.goExpDetail();
   },
 
-  ensureLogin(message) {
-    return store.requireLogin(message);
+  ensureLogin(action) {
+    if (store.getState().loggedIn) return true;
+    this.setData({ pendingLoginAction: action || '' });
+    const popup = this.selectComponent('#loginPopup');
+    if (popup) popup.open({ scene: action || 'mine' });
+    return false;
   },
 
   editProfile() {
-    if (!this.ensureLogin('登录后可编辑个人资料')) return;
+    if (!this.ensureLogin('editProfile')) return;
     wx.navigateTo({ url: '/pages/profileEdit/profileEdit' });
   },
 
   goMember() {
-    if (!this.ensureLogin('登录后可查看权益规则')) return;
+    if (!this.ensureLogin('goMember')) return;
     wx.navigateTo({ url: '/pages/member/member' });
   },
 
   goCoupon() {
-    if (!this.ensureLogin('登录后可查看优惠券')) return;
+    if (!this.ensureLogin('goCoupon')) return;
     wx.navigateTo({ url: '/pages/coupon/coupon' });
   },
 
   goExpDetail() {
-    if (!this.ensureLogin('登录后可查看经验值明细')) return;
+    if (!this.ensureLogin('goExpDetail')) return;
     wx.navigateTo({ url: '/pages/expDetail/expDetail' });
+  },
+
+  goAccountSetting() {
+    if (!this.ensureLogin('goAccountSetting')) return;
+    wx.navigateTo({ url: '/pages/accountManage/accountManage' });
   },
 
   goOrders() {

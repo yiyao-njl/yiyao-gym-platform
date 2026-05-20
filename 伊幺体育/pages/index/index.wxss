@@ -1,4 +1,4 @@
-.index-page {
+﻿.index-page {
   padding-bottom: calc(40rpx + env(safe-area-inset-bottom));
   overflow-x: hidden;
 }
@@ -263,4 +263,15 @@
 .activity-body {
   flex: 1;
   min-width: 0;
+}
+
+
+.login-btn {
+  width: 160rpx;
+  height: 60rpx;
+  color: #ffffff;
+  font-size: 25rpx;
+  line-height: 60rpx;
+  border-radius: 30rpx;
+  background: #12a86b;
 }
