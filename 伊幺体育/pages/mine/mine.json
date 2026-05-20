@@ -1,4 +1,4 @@
-﻿{
+{
   "usingComponents": {
     "login-popup": "/components/login-popup/login-popup"
   }
