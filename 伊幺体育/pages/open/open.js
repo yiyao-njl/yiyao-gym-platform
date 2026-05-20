@@ -13,6 +13,7 @@ const {
 
 Page({
   data: {
+    currentMinute: 0,
     mode: 'walkIn',
     modeText: '到店开场',
     keyword: '',
@@ -63,6 +64,57 @@ Page({
   onLoad() {
     this.setShopToolsStyle();
     this.initOpenChromeMetrics();
+  },
+
+  onHide() {
+    if (this._timeTimer) {
+      clearInterval(this._timeTimer);
+      this._timeTimer = null;
+    }
+  },
+
+  startTimePolling() {
+    this.updateCurrentMinute();
+    if (this._timeTimer) clearInterval(this._timeTimer);
+    this._timeTimer = setInterval(() => this.updateCurrentMinute(), 30000);
+  },
+
+  updateCurrentMinute() {
+    const now = new Date();
+    const currentMinute = now.getHours() * 60 + now.getMinutes();
+    const oldMinute = this.data.currentMinute || 0;
+    this.setData({ currentMinute });
+    if (oldMinute !== currentMinute && this.data.mode === 'walkIn') {
+      this.checkExpiredSlots(currentMinute);
+    }
+  },
+
+  checkExpiredSlots(currentMinute) {
+    const venues = this.data.venues || [];
+    let hasExpired = false;
+    venues.forEach(venue => {
+      (venue.slotItems || []).forEach(slot => {
+        if (slot.startMinute < currentMinute && slot.status !== 'expired') {
+          slot.status = 'expired';
+          hasExpired = true;
+        }
+      });
+    });
+    if (hasExpired) {
+      this.setData({ venues });
+      const cart = store.getState().cart || [];
+      const expiredCartItems = cart.filter(item => {
+        const slotStart = Number(item.startMinute);
+        return slotStart < currentMinute && item.storeId === this.data.store.id;
+      });
+      if (expiredCartItems.length > 0) {
+        const names = expiredCartItems.map(item => item.venueName).join('.');
+        wx.showToast({ title: `${names} 时段已过期，请重新选择`, icon: 'none', duration: 2000 });
+        store.removeCartItems(expiredCartItems.map(item => item.id));
+        this.startTimePolling();
+      this.loadCartBar();
+      }
+    }
   },
 
   onShow() {

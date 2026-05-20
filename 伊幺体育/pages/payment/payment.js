@@ -108,10 +108,9 @@ Page({
       this.applyPricing(validItems);
       return;
     }
-    const orderItems = this.normalizeOrderItems(validItems);
-    if (!(await this.showReservationOrderNoticeIfNeeded(orderItems))) return;
-    const mode = this.resolveOrderMode(orderItems);
-    const backendOrderRequest = buildBackendOrderRequest(orderItems, mode, this.data.coupon);
+    const mode = (this.data.items || []).every(item => item.mode === 'walkIn') ? 'walkIn' : 'reservation';
+    if (!(await this.showReservationOrderNoticeIfNeeded(validItems))) return;
+    const backendOrderRequest = buildBackendOrderRequest(validItems, mode, this.data.coupon);
     wx.showLoading({ title: '提交订单中' });
     api.app.createOrder(backendOrderRequest)
       .then(backendOrder => api.app.createPayment({
@@ -123,18 +122,13 @@ Page({
       }).then(() => backendOrder)))
       .then(backendOrder => {
         wx.hideLoading();
-        const order = store.createOrder(orderItems, mode, this.data.total, { backendOrderRequest, backendOrder });
-        store.payOrder(order.id);
+        const order = store.saveBackendOrder(backendOrder);
         store.removeCartItems(validItems.map(item => item.id));
         this.showPaySuccess(order);
       })
       .catch(error => {
         wx.hideLoading();
-        wx.showToast({ title: error.message || '后端暂不可用，使用本地模拟支付', icon: 'none' });
-        const order = store.createOrder(orderItems, mode, this.data.total, { backendOrderRequest });
-        store.payOrder(order.id);
-        store.removeCartItems(validItems.map(item => item.id));
-        this.showPaySuccess(order);
+        wx.showToast({ title: error.message || '下单失败，请稍后重试', icon: 'none', duration: 2500 });
       });
   },
 

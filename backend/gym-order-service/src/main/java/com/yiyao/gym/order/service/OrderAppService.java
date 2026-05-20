@@ -36,6 +36,10 @@ public class OrderAppService {
     }
 
     public Map<String, Object> createOrder(CreateOrderRequest request) {
+        return createOrder("app-user-001", request);
+    }
+
+    public Map<String, Object> createOrder(String userId, CreateOrderRequest request) {
         List<CreateOrderItemRequest> items = normalizeItems(request);
         items.forEach(this::validateOrderItem);
         List<String> lockKeys = items.stream()
@@ -63,34 +67,18 @@ public class OrderAppService {
                             "priceCent", item.priceCent() == null ? 0 : item.priceCent()
                     ))
                     .toList();
-            return repository.createOrder(userId, request.orderType(), rawItems);
+            return repository.createOrder(blankTo(userId, "app-user-001"), request.orderType(), rawItems);
         } finally {
             acquired.forEach(redisTemplate::delete);
         }
-    }
-
-    public Map<String, Object> createOrder(String userId, CreateOrderRequest request) {
-        return createOrder(blankTo(userId, "app-user-001"), request);
-    }
-
-    private Map<String, Object> createOrder(CreateOrderRequest request) {
-        return createOrder("app-user-001", request);
     }
 
     public List<Map<String, Object>> orders() {
         return repository.orders();
     }
 
-    public List<Map<String, Object>> ordersByUser(String userId) {
-        return repository.ordersByUser(blankTo(userId, "app-user-001"));
-    }
-
     public Map<String, Object> order(String orderId) {
         return repository.order(orderId);
-    }
-
-    public Map<String, Object> orderByUser(String userId, String orderId) {
-        return repository.orderByUser(blankTo(userId, "app-user-001"), orderId);
     }
 
     public Map<String, Object> cancel(String orderId) {
@@ -107,6 +95,10 @@ public class OrderAppService {
 
     public Map<String, Object> arrive(String orderId) {
         return repository.arriveOrder(orderId);
+    }
+
+    public Map<String, Object> confirmArrival(String orderId) {
+        return repository.confirmArrival("app-user-001", orderId);
     }
 
     private List<CreateOrderItemRequest> normalizeItems(CreateOrderRequest request) {

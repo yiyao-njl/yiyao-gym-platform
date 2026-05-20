@@ -1,26 +1,26 @@
-<view class="page">
+﻿<view class="page">
   <view class="app-nav">
     <button class="app-nav-back" bindtap="goBack">‹</button>
     <text class="app-nav-title">订单详情</text>
   </view>
   <view wx:if="{{order}}" class="section card detail">
     <view class="status-line">
-      <text class="detail-title">{{order.status}}</text>
-      <text class="price">¥{{order.total}}</text>
+      <text class="detail-title">{{order.orderStatus || order.status}}</text>
+      <text class="price">¥{{order.amount || order.total}}</text>
     </view>
     <text class="detail-sub">订单号：{{order.orderNo}}</text>
     <text class="detail-sub">创建时间：{{order.createdAt}}</text>
-    <block wx:for="{{order.items}}" wx:key="id">
+    <block wx:for="{{order.items}}" wx:key="itemId">
       <view class="goods">
         <text class="goods-title">{{item.venueName}}</text>
-        <text class="detail-sub">{{item.storeName}}</text>
-        <text class="detail-sub">{{item.packageName}} · {{item.date}} {{item.startTime}}-{{item.endTime}}</text>
-        <text class="detail-sub">数量：{{item.quantity || 1}} 场</text>
+        <text class="detail-sub">{{item.store || item.storeName}}</text>
+        <text class="detail-sub">{{item.bizDate || item.date}} {{item.startTime}}-{{item.endTime}}</text>
         <text class="detail-sub">支付状态：{{order.payStatus}} · 使用状态：{{order.useStatus}}</text>
       </view>
     </block>
     <view class="tip">请按时到店使用，最终核销与退款状态以后端结果为准。</view>
     <button class="primary-btn" bindtap="goMap">门店导航</button>
+    <button wx:if="{{canConfirmArrival}}" class="primary-btn" style="background:#07c160;margin-top:10px" bindtap="confirmArrival">确认到场</button>
   </view>
   <view wx:else class="section empty card">
     未找到订单

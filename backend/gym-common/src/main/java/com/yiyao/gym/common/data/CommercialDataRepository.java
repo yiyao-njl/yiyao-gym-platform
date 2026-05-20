@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -358,7 +359,27 @@ public class CommercialDataRepository {
             items.add(map("venueId", venueId, "venueName", venue.get("name"), "storeId", venue.get("storeId"),
                     "packageId", string(raw.get("packageId"), ""), "bizDate", bizDate, "startTime", start, "endTime", end, "priceCent", priceCent));
         }
-        LocalDateTime now = LocalDateTime.now(BUSINESS_ZONE);
+        LocalDateTime now = LocalDateTime.now(BUSINESS_ZONE).truncatedTo(ChronoUnit.MINUTES);
+        int currentMinute = now.getHour() * 60 + now.getMinute();
+        if ("WALK_IN".equalsIgnoreCase(orderType)) {
+            for (Map<String, Object> item : items) {
+                LocalTime start = (LocalTime) item.get("startTime");
+                LocalTime end = (LocalTime) item.get("endTime");
+                int startMinute = start.getHour() * 60 + start.getMinute();
+                if (startMinute < currentMinute) {
+                    int offset = currentMinute - startMinute;
+                    LocalTime newStart = LocalTime.of(currentMinute / 60, currentMinute % 60);
+                    LocalTime newEnd = end.plusMinutes(offset);
+                    String venueId = string(item.get("venueId"), "");
+                    LocalDate bizDate = (LocalDate) item.get("bizDate");
+                    if (!isVenueAvailable(venueId, bizDate, newStart, newEnd)) {
+                        throw new BizException(ErrorCode.VENUE_UNAVAILABLE, "所选时段已过期，延后后与已有预约冲突，请重新选择");
+                    }
+                    item.put("startTime", newStart);
+                    item.put("endTime", newEnd);
+                }
+            }
+        }
         String normalizedType = resolveEffectiveOrderType(orderType, items, now);
         String occupyStatus = "WALK_IN".equals(normalizedType) ? "USING" : "BOOKED";
         jdbc.update("""
@@ -382,6 +403,8 @@ public class CommercialDataRepository {
         }
         return order(orderId);
     }
+
+
 
     public List<Map<String, Object>> orders() {
         List<Map<String, Object>> orders = jdbc.queryForList("""
@@ -409,6 +432,7 @@ public class CommercialDataRepository {
                 order by o.created_at desc
                 """);
         orders.forEach(this::attachOrderItems);
+        applyGracePeriodCancel(orders);
         return orders;
     }
 
@@ -439,6 +463,7 @@ public class CommercialDataRepository {
                 """, orderIdOrNo, orderIdOrNo);
         if (!order.isEmpty()) {
             attachOrderItems(order);
+            applyGracePeriodCancel(order);
         }
         return order;
     }
@@ -822,17 +847,22 @@ public class CommercialDataRepository {
     }
 
     private String resolveEffectiveOrderType(String orderType, List<Map<String, Object>> items, LocalDateTime now) {
-        String requestedType = "WALK_IN".equalsIgnoreCase(orderType) || "WALKIN".equalsIgnoreCase(orderType) ? "WALK_IN" : "RESERVATION";
-        if (!"WALK_IN".equals(requestedType)) {
+        if (!"WALK_IN".equalsIgnoreCase(orderType) && !"WALKIN".equalsIgnoreCase(orderType)) {
             return "RESERVATION";
         }
+        LocalDate today = now.toLocalDate();
+        int currentMinute = now.getHour() * 60 + now.getMinute();
         for (Map<String, Object> item : items) {
             LocalDate bizDate = (LocalDate) item.get("bizDate");
             LocalTime startTime = (LocalTime) item.get("startTime");
-            if (LocalDateTime.of(bizDate, startTime).isAfter(now)) {
+            if (!bizDate.equals(today)) {
                 return "RESERVATION";
             }
             if (!isStoreOpenNow(String.valueOf(item.get("storeId")), now.toLocalTime())) {
+                return "RESERVATION";
+            }
+            int startMinute = startTime.getHour() * 60 + startTime.getMinute();
+            if (startMinute > currentMinute) {
                 return "RESERVATION";
             }
         }
@@ -909,4 +939,57 @@ public class CommercialDataRepository {
         }
         return "";
     }
+
+    private void applyGracePeriodCancel(Map<String, Object> order) {
+        String orderType = string(order.get("orderType"), "");
+        String useStatus = string(order.get("useStatus"), "");
+        if (!"RESERVATION".equals(orderType) || !"RESERVED".equals(useStatus)) {
+            return;
+        }
+        List<Map<String, Object>> items = (List<Map<String, Object>>) order.get("items");
+        if (items == null || items.isEmpty()) return;
+        Map<String, Object> first = items.get(0);
+        LocalDate bizDate = first.get("bizDate") instanceof LocalDate ? (LocalDate) first.get("bizDate") : LocalDate.parse(String.valueOf(first.get("bizDate")));
+        LocalTime startTime = first.get("startTime") instanceof LocalTime ? (LocalTime) first.get("startTime") : LocalTime.parse(String.valueOf(first.get("startTime")));
+        LocalDateTime now = LocalDateTime.now(BUSINESS_ZONE).truncatedTo(ChronoUnit.MINUTES);
+        int startMinute = startTime.getHour() * 60 + startTime.getMinute();
+        int currentMinute = now.getHour() * 60 + now.getMinute();
+        if (bizDate.equals(now.toLocalDate()) && currentMinute > startMinute + 15) {
+            String orderId = string(order.get("id"), string(order.get("orderId"), ""));
+            if (!orderId.isBlank()) {
+                jdbc.update("update gym_order set order_status = 'CANCELLED', use_status = 'CANCELLED' where id = ?", orderId);
+                jdbc.update("update venue_occupancy set occupy_status = 'CANCELLED' where order_id = ?", orderId);
+                order.put("orderStatus", "已取消");
+                order.put("orderStatusCode", "CANCELLED");
+                order.put("useStatus", "CANCELLED");
+            }
+        }
+    }
+
+    private void applyGracePeriodCancel(List<Map<String, Object>> orders) {
+        for (Map<String, Object> order : orders) {
+            applyGracePeriodCancel(order);
+        }
+    }
+
+    @Transactional
+    public Map<String, Object> confirmArrival(String userId, String orderIdOrNo) {
+        Map<String, Object> target = order(orderIdOrNo);
+        if (target.isEmpty()) {
+            throw new BizException(ErrorCode.RESOURCE_NOT_FOUND, "订单不存在");
+        }
+        String orderUserId = string(target.get("userId"), "");
+        if (!orderUserId.isBlank() && !orderUserId.equals(blankTo(userId, "app-user-001"))) {
+            throw new BizException(ErrorCode.FORBIDDEN, "无权操作该订单");
+        }
+        String orderType = string(target.get("orderType"), "");
+        String useStatus = string(target.get("useStatus"), "");
+        if (!"RESERVATION".equals(orderType) || !"RESERVED".equals(useStatus)) {
+            throw new BizException(ErrorCode.BUSINESS_CONFLICT, "当前订单状态不允许确认到场");
+        }
+        jdbc.update("update gym_order set order_status = 'IN_USE', use_status = 'IN_USE' where id = ?", target.get("id"));
+        jdbc.update("update venue_occupancy set occupy_status = 'USING' where order_id = ?", target.get("id"));
+        return order(string(target.get("id"), ""));
+    }
+
 }

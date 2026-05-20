@@ -39,6 +39,18 @@ module.exports = {
     },
     orders() {
       return http.request({ url: '/api/app/orders' });
+    },
+    orderDetail(orderId) {
+      return http.request({ url: `/api/app/orders/${orderId}` });
+    },
+    cancelOrder(orderId) {
+      return http.request({ url: `/api/app/orders/${orderId}/cancel`, method: 'POST' });
+    },
+    refundOrder(orderId, reason) {
+      return http.request({ url: `/api/app/orders/${orderId}/refund`, method: 'POST', data: { reason: reason || '' } });
+    },
+    confirmArrival(orderId) {
+      return http.request({ url: `/api/app/orders/${orderId}/confirm-arrival`, method: 'POST' });
     }
   }
 };

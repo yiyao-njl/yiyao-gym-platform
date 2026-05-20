@@ -53,4 +53,9 @@ public class OrderController {
     public ApiResponse<Map<String, Object>> arrive(@PathVariable String orderId) {
         return ApiResponse.ok(orderAppService.arrive(orderId));
     }
+
+    @PostMapping("/api/app/orders/{orderId}/confirm-arrival")
+    public ApiResponse<Map<String, Object>> confirmArrival(@PathVariable String orderId) {
+        return ApiResponse.ok(orderAppService.confirmArrival(orderId));
+    }
 }

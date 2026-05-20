@@ -399,65 +399,36 @@ function removeCartItems(ids) {
   return saveState(state);
 }
 
-function createOrder(items, mode, total, extra) {
-  const state = loadState();
-  const normalizedItems = (items || []).map(item => Object.assign({}, item, {
-    orderOccupyType: mode === 'reservation' ? 'booked' : 'using'
-  }));
-  const order = Object.assign({
-    id: `order-${Date.now()}`,
-    orderNo: `YY${Date.now()}`,
-    type: mode === 'reservation' ? '预约订单' : '开场订单',
-    items: normalizedItems,
-    total,
-    status: '待支付',
-    payStatus: '未支付',
-    useStatus: '未使用',
-    createdAt: formatDate(new Date())
-  }, extra || {});
-  state.orders.unshift(order);
-  saveState(state);
-  return order;
-}
-
-function payOrder(orderId) {
-  const state = loadState();
-  let paidOrder = null;
-  state.orders = state.orders.map(order => {
-    if (order.id !== orderId) return order;
-    const nextOrder = Object.assign({}, order, {
-      status: '已支付',
-      payStatus: '已支付',
-      useStatus: getOrderRuntimeUseStatus(order, new Date())
-    });
-    paidOrder = nextOrder;
-    return nextOrder;
-  });
-  if (paidOrder) {
-    upsertOrderOccupations(state, paidOrder);
-    syncOrderTimeStatus(state);
+function saveBackendOrder(backendOrder) {
+    const state = loadState();
+    const order = {
+      id: backendOrder.orderId || backendOrder.id,
+      orderNo: backendOrder.orderNo,
+      type: backendOrder.type || (backendOrder.orderType === 'WALK_IN' ? '开场订单' : '预约订单'),
+      orderType: backendOrder.orderType,
+      items: (backendOrder.items || []).map(item => ({
+        venueId: item.venueId,
+        venueName: item.venueName,
+        storeId: item.storeId,
+        storeName: item.store || '',
+        packageId: item.packageId,
+        date: item.bizDate,
+        startTime: item.startTime,
+        endTime: item.endTime,
+        price: item.price || (item.priceCent / 100)
+      })),
+      amount: backendOrder.amount,
+      orderStatus: backendOrder.orderStatus || '已支付',
+      payStatus: backendOrder.payStatus || '已支付',
+      useStatus: backendOrder.useStatus || '已预约',
+      createdAt: backendOrder.createdAt || formatDate(new Date())
+    };
+    state.orders = state.orders.filter(o => o.id !== order.id);
+    state.orders.unshift(order);
+    saveState(state);
+    return order;
   }
-  if (paidOrder) {
-    const expValue = Math.max(1, Math.round(Number(paidOrder.total || 0) / 10));
-    const user = Object.assign({}, state.user || mock.user, {
-      exp: Math.min(Number((state.user || mock.user).nextExp || 50), Number((state.user || mock.user).exp || 0) + expValue)
-    });
-    const records = state.expRecords || mock.expRecords;
-    state.user = user;
-    state.expRecords = [{
-      id: `exp-${Date.now()}`,
-      month: formatMonth(new Date()),
-      title: '订单消费',
-      desc: `订单号：${paidOrder.orderNo}`,
-      time: formatFullDate(new Date()),
-      value: expValue,
-      currentExp: user.exp,
-      type: 'order'
-    }].concat(records);
-  }
-  saveState(state);
-}
-
+  
 function updateOrder(orderId, patch) {
   const state = loadState();
   state.orders = state.orders.map(order => order.id === orderId ? Object.assign({}, order, patch) : order);
@@ -601,7 +572,6 @@ module.exports = {
   updateCart,
   clearCheckedCart,
   removeCartItems,
-  createOrder,
-  payOrder,
+  saveBackendOrder,
   updateOrder
 };
