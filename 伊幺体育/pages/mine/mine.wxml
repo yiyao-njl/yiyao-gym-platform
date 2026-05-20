@@ -1,4 +1,4 @@
-<view class="page mine-page">
+﻿<view class="page mine-page">
   <view class="mine-hero">
     <view class="profile-row" bindtap="editProfile">
       <image class="avatar" src="{{user.avatar}}" mode="aspectFill" />
@@ -45,7 +45,7 @@
 
   <view wx:else class="login-card card">
     <text>登录后查看会员等级、经验值和专属权益</text>
-    <button loading="{{loginLoading}}" disabled="{{loginLoading}}" bindtap="login">{{loginLoading ? '登录中' : '微信授权登录'}}</button>
+    <button loading="{{loginLoading}}" disabled="{{loginLoading}}" bindtap="login">{{loginLoading ? '登录中' : '注册/登录'}}</button>
   </view>
 
   <view class="section card coupon-section">
@@ -73,10 +73,8 @@
     <view class="service-row" bindtap="goOrders"><text>历史订单</text><text>›</text></view>
     <view class="service-row" bindtap="goMember"><text>权益规则</text><text>›</text></view>
     <view class="service-row" bindtap="goExpDetail"><text>经验值明细</text><text>›</text></view>
-    <view class="service-row"><text>账号设置</text><text>›</text></view>
+    <view class="service-row" bindtap="goAccountSetting"><text>账号设置</text><text>›</text></view>
   </view>
 
-  <view class="section">
-    <button wx:if="{{loggedIn}}" class="danger-btn" bindtap="logout">账号管理</button>
-  </view>
+  <login-popup id="loginPopup" bindsuccess="onLoginSuccess"></login-popup>
 </view>
