@@ -1,0 +1,45 @@
+services:
+  mysql:
+    image: mysql:8.3
+    container_name: gym-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: gym_operation
+      MYSQL_USER: gym
+      MYSQL_PASSWORD: gym
+      TZ: Asia/Shanghai
+    ports:
+      - "3306:3306"
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_0900_ai_ci
+    volumes:
+      - gym-mysql-data:/var/lib/mysql
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+  redis:
+    image: redis:7.2
+    container_name: gym-redis
+    ports:
+      - "6379:6379"
+
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: gym-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: gym
+      RABBITMQ_DEFAULT_PASS: gym
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  nacos:
+    image: nacos/nacos-server:v2.3.2
+    container_name: gym-nacos
+    environment:
+      MODE: standalone
+      NACOS_AUTH_ENABLE: "false"
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+
+volumes:
+  gym-mysql-data:

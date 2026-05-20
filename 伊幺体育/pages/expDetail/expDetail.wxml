@@ -1,0 +1,36 @@
+<view class="page exp-page">
+  <view class="app-nav">
+    <button class="app-nav-back" bindtap="goBack"></button>
+    <text class="app-nav-title">我的经验值</text>
+  </view>
+
+  <view class="exp-summary">
+    <text>当前经验值</text>
+    <text>{{user.exp}}</text>
+    <text>{{user.level}} {{user.levelName}}</text>
+  </view>
+
+  <view class="exp-list" wx:if="{{groups.length}}">
+    <block wx:for="{{groups}}" wx:key="month">
+      <view class="month-card">
+        <text class="month-title">{{item.month}}</text>
+        <block wx:for="{{item.records}}" wx:key="id" wx:for-item="record">
+          <view class="record-row">
+            <view class="record-main">
+              <text class="record-title">{{record.title}}</text>
+              <text class="record-desc">{{record.desc}}</text>
+              <text class="record-time">{{record.time}}</text>
+            </view>
+            <view class="record-value">
+              <text>{{record.value > 0 ? '+' : ''}}{{record.value}}</text>
+              <text>经验值</text>
+            </view>
+          </view>
+        </block>
+      </view>
+    </block>
+    <text class="list-end">^_^ 到底了</text>
+  </view>
+
+  <view wx:else class="empty card">暂无经验值明细</view>
+</view>

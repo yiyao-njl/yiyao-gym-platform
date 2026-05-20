@@ -1,0 +1,45 @@
+.activity-hero {
+  width: 100%;
+  height: 430rpx;
+}
+
+.activity-detail {
+  margin-top: -44rpx;
+  padding: 30rpx;
+}
+
+.title {
+  display: block;
+  font-size: 38rpx;
+  font-weight: 800;
+}
+
+.time,
+.summary {
+  display: block;
+  margin-top: 14rpx;
+  color: #7f8b99;
+  font-size: 25rpx;
+  line-height: 1.6;
+}
+
+.rule {
+  margin-top: 30rpx;
+  padding: 24rpx;
+  border-radius: 16rpx;
+  background: #f5f7f8;
+}
+
+.rule text {
+  display: block;
+  margin-bottom: 12rpx;
+  font-size: 26rpx;
+}
+
+.rule text:first-child {
+  font-weight: 800;
+}
+
+.fixed-btn {
+  flex: 1;
+}

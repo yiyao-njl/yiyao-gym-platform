@@ -1,0 +1,75 @@
+{
+  "cloud": true,
+  "pages": [
+    "pages/index/index",
+    "pages/open/open",
+    "pages/orders/orders",
+    "pages/mine/mine",
+    "pages/login/login",
+    "pages/accountManage/accountManage",
+    "pages/switchAccount/switchAccount",
+    "pages/logout/logout",
+    "pages/phoneLogin/phoneLogin",
+    "pages/city/city",
+    "pages/store/store",
+    "pages/venue/venue",
+    "pages/cart/cart",
+    "pages/payment/payment",
+    "pages/activity/activity",
+    "pages/member/member",
+    "pages/profileEdit/profileEdit",
+    "pages/expDetail/expDetail",
+    "pages/coupon/coupon",
+    "pages/orderDetail/orderDetail"
+  ],
+  "usingComponents": {
+    "loading": "/components/loading/loading",
+    "login-popup": "/components/login-popup/login-popup"
+  },
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationStyle": "custom"
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于定位当前城市并推荐附近门店"
+    }
+  },
+  "requiredPrivateInfos": [
+    "getLocation"
+  ],
+  "tabBar": {
+    "color": "#8a96a3",
+    "selectedColor": "#12a86b",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/icons/tab-home.png",
+        "selectedIconPath": "images/icons/tab-home-active.png"
+      },
+      {
+        "pagePath": "pages/open/open",
+        "text": "开场",
+        "iconPath": "images/icons/tab-open.png",
+        "selectedIconPath": "images/icons/tab-open-active.png"
+      },
+      {
+        "pagePath": "pages/orders/orders",
+        "text": "订单",
+        "iconPath": "images/icons/tab-orders.png",
+        "selectedIconPath": "images/icons/tab-orders-active.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的",
+        "iconPath": "images/icons/tab-mine.png",
+        "selectedIconPath": "images/icons/tab-mine-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents"
+}

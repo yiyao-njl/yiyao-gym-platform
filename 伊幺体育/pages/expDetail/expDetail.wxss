@@ -1,0 +1,115 @@
+.exp-page {
+  background: #f6f6f6;
+}
+
+.exp-summary {
+  margin: calc(204rpx + env(safe-area-inset-top)) 24rpx 0;
+  padding: 28rpx 32rpx;
+  border-radius: 20rpx;
+  background: linear-gradient(135deg, #e8f6ed 0%, #ffffff 100%);
+}
+
+.exp-summary text {
+  display: block;
+}
+
+.exp-summary text:first-child {
+  color: #777777;
+  font-size: 26rpx;
+}
+
+.exp-summary text:nth-child(2) {
+  margin-top: 10rpx;
+  color: #1276c4;
+  font-size: 56rpx;
+  font-weight: 900;
+}
+
+.exp-summary text:last-child {
+  margin-top: 6rpx;
+  color: #12a86b;
+  font-size: 25rpx;
+}
+
+.exp-list {
+  padding: 24rpx;
+}
+
+.month-card {
+  overflow: hidden;
+  margin-bottom: 24rpx;
+  border-radius: 18rpx;
+  background: #ffffff;
+}
+
+.month-title {
+  display: block;
+  padding: 30rpx 28rpx;
+  color: #111111;
+  font-size: 36rpx;
+  font-weight: 900;
+  border-bottom: 1rpx solid #eeeeee;
+}
+
+.record-row {
+  display: flex;
+  align-items: center;
+  min-height: 164rpx;
+  padding: 28rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.record-row:last-child {
+  border-bottom: 0;
+}
+
+.record-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.record-title {
+  display: block;
+  color: #222222;
+  font-size: 32rpx;
+  font-weight: 900;
+  line-height: 44rpx;
+}
+
+.record-desc,
+.record-time {
+  display: block;
+  margin-top: 12rpx;
+  color: #777777;
+  font-size: 26rpx;
+  line-height: 34rpx;
+}
+
+.record-value {
+  flex: 0 0 auto;
+  min-width: 118rpx;
+  margin-left: 18rpx;
+  text-align: right;
+}
+
+.record-value text:first-child {
+  display: block;
+  color: #1276c4;
+  font-size: 34rpx;
+  font-weight: 900;
+}
+
+.record-value text:last-child {
+  display: block;
+  margin-top: 8rpx;
+  color: #1276c4;
+  font-size: 22rpx;
+}
+
+.list-end {
+  display: block;
+  padding: 18rpx 0 44rpx;
+  color: #999999;
+  font-size: 26rpx;
+  text-align: center;
+}

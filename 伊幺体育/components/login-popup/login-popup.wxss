@@ -1,0 +1,253 @@
+.login-popup-root {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+}
+
+.login-popup-mask {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.58);
+}
+
+.agreement-mask {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+
+.agreement-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.58);
+}
+
+.login-popup {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 32rpx calc(32rpx + env(safe-area-inset-bottom));
+  border-radius: 34rpx 34rpx 0 0;
+  background: #ffffff;
+}
+
+.popup-close {
+  position: absolute;
+  right: 42rpx;
+  top: -74rpx;
+  width: 58rpx;
+  height: 58rpx;
+  color: #ffffff;
+  font-size: 48rpx;
+  line-height: 54rpx;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.34);
+}
+
+.benefit-hero {
+  position: relative;
+  margin: -152rpx -32rpx 0;
+  padding: 124rpx 32rpx 34rpx;
+  overflow: hidden;
+  color: #9d642f;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #fff8e4 32%, #ead7a7 100%);
+}
+
+.benefit-hero::before {
+  content: "";
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  top: 54rpx;
+  height: 130rpx;
+  border-radius: 0 0 50% 50%;
+  background: #ffffff;
+}
+
+.benefit-title {
+  position: relative;
+  z-index: 2;
+  display: block;
+  color: #c17829;
+  font-size: 58rpx;
+  font-weight: 900;
+  text-shadow: 0 4rpx 0 #fff3d7;
+}
+
+.benefit-sub {
+  position: relative;
+  z-index: 2;
+  display: block;
+  margin-top: 12rpx;
+  color: #997449;
+  font-size: 26rpx;
+}
+
+.spark {
+  position: absolute;
+  z-index: 2;
+  color: #d7a34b;
+  font-size: 48rpx;
+}
+
+.spark.left {
+  left: 58rpx;
+  top: 210rpx;
+}
+
+.spark.right {
+  right: 118rpx;
+  top: 164rpx;
+}
+
+.sports-row {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18rpx;
+  margin-top: 34rpx;
+}
+
+.sports-row view {
+  height: 132rpx;
+  padding-top: 78rpx;
+  color: #8a5a2d;
+  font-size: 22rpx;
+  border-radius: 60rpx 60rpx 18rpx 18rpx;
+  background: linear-gradient(180deg, #fffdf5 0%, #f1dba6 100%);
+}
+
+.coupon-row {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16rpx;
+  margin-top: 22rpx;
+}
+
+.coupon-row view {
+  min-height: 112rpx;
+  padding: 18rpx 8rpx;
+  border-radius: 12rpx;
+  background: #ffffff;
+}
+
+.coupon-row text:first-child {
+  display: block;
+  color: #b76c28;
+  font-size: 38rpx;
+  font-weight: 800;
+}
+
+.coupon-row text:last-child {
+  display: block;
+  margin-top: 8rpx;
+  color: #93622f;
+  font-size: 21rpx;
+}
+
+.one-key-btn {
+  height: 90rpx;
+  margin-top: 34rpx;
+  color: #f4d795;
+  font-size: 32rpx;
+  font-weight: 800;
+  line-height: 90rpx;
+  border-radius: 48rpx;
+  background: #4d4d4d;
+}
+
+.other-login {
+  height: 78rpx;
+  color: #707070;
+  font-size: 30rpx;
+  line-height: 78rpx;
+}
+
+.agreement-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48rpx;
+  color: #9a9a9a;
+  font-size: 24rpx;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38rpx;
+  height: 38rpx;
+  margin-right: 12rpx;
+  color: transparent;
+  border: 3rpx solid #d4d4d4;
+  border-radius: 50%;
+}
+
+.check.checked {
+  color: #ffffff;
+  border-color: #c9a568;
+  background: #c9a568;
+}
+
+.link {
+  color: #b9975f;
+}
+
+.agreement-dialog {
+  position: absolute;
+  left: 48rpx;
+  right: 48rpx;
+  top: 44%;
+  z-index: 4;
+  padding: 56rpx 38rpx 44rpx;
+  border-radius: 22rpx;
+  background: #ffffff;
+  transform: translateY(-50%);
+}
+
+.agreement-title {
+  display: block;
+  color: #333333;
+  font-size: 31rpx;
+  line-height: 46rpx;
+  text-align: center;
+}
+
+.agreement-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 28rpx;
+  margin-top: 48rpx;
+}
+
+.agreement-actions button {
+  width: 228rpx !important;
+  height: 78rpx !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 30rpx;
+  line-height: 78rpx !important;
+  border-radius: 42rpx;
+}
+
+.agreement-actions button::after {
+  border: 0 !important;
+}
+
+.agreement-actions .plain {
+  color: #333333;
+  border: 2rpx solid #666666;
+  background: #ffffff;
+}
+
+.agreement-actions .dark {
+  color: #f4d795;
+  background: #4d4d4d;
+}

@@ -1,0 +1,48 @@
+<view class="page profile-edit-page with-fixed-bar">
+  <view class="app-nav">
+    <button class="app-nav-back" bindtap="goBack"></button>
+    <text class="app-nav-title">编辑个人资料</text>
+  </view>
+
+  <view class="edit-card">
+    <view class="avatar-wrap">
+      <image class="edit-avatar" src="{{form.avatar}}" mode="aspectFill" />
+      <view class="camera-dot">📷</view>
+    </view>
+
+    <view class="form-row">
+      <text class="label">昵称</text>
+      <input class="field" value="{{form.nickname}}" data-key="nickname" bindinput="onInput" maxlength="16" />
+      <text class="edit-icon">✎</text>
+    </view>
+    <view class="form-row" bindtap="goSwitchAccount">
+      <text class="label">手机</text>
+      <text class="field text-field">{{form.phone}}</text>
+      <text class="action-text">更换绑定 ›</text>
+    </view>
+    <view class="form-row">
+      <text class="label">性别</text>
+      <radio-group class="gender-group" bindchange="changeGender">
+        <label><radio value="男" checked="{{form.gender === '男'}}" />男</label>
+        <label><radio value="女" checked="{{form.gender === '女'}}" />女</label>
+      </radio-group>
+    </view>
+    <view class="form-row birthday-row">
+      <text class="label">生日</text>
+      <text class="birthday-tip">{{form.birthday || '仅支持修改一次'}}</text>
+      <picker mode="date" value="{{form.birthday}}" bindchange="changeBirthday">
+        <view class="birthday-btn">修改生日</view>
+      </picker>
+    </view>
+    <text class="minor-tip">根据未成年人保护相关法律法规要求，我们不主动处理 14 周岁以下未成年人的个人信息。</text>
+  </view>
+
+  <view class="switch-card" bindtap="switchAccount">
+    <text>切换账号</text>
+    <text>›</text>
+  </view>
+
+  <view class="fixed-bar profile-save-bar">
+    <button class="save-btn" bindtap="save">保存</button>
+  </view>
+</view>

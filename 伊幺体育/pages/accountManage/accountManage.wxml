@@ -1,0 +1,11 @@
+<view class="page account-page">
+  <view class="app-nav">
+    <button class="app-nav-back" bindtap="goBack"></button>
+    <text class="app-nav-title">账号管理</text>
+  </view>
+
+  <view class="account-list">
+    <view class="account-row" bindtap="goSwitch"><text>切换账号</text><text>›</text></view>
+    <view class="account-row" bindtap="goLogout"><text>退出登录</text><text>›</text></view>
+  </view>
+</view>

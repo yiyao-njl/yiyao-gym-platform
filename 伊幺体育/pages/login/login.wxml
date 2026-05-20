@@ -1,0 +1,70 @@
+<view class="page login-page">
+  <view class="login-nav">
+    <button class="back-btn" hover-class="none" bindtap="goBack">‹</button>
+    <text>微信登录</text>
+  </view>
+
+  <view class="login-head">
+    <view class="brand-mark">
+      <image src="/images/伊幺体育.jpg" mode="aspectFill" />
+    </view>
+    <text class="headline">登录伊幺体育</text>
+    <text class="subhead">使用微信手机号快速登录，新用户将同步创建会员资料</text>
+    <view class="status-row">
+      <view class="status-dot is-on"></view>
+      <text>微信凭证{{loginCode ? '已就绪' : '获取中'}}</text>
+      <view class="status-line"></view>
+      <view class="status-dot {{phoneReady ? 'is-on' : ''}}"></view>
+      <text>{{phoneReady ? '手机号已授权' : '等待手机号'}}</text>
+    </view>
+  </view>
+
+  <view class="profile-panel">
+    <view class="panel-title">
+      <text>会员资料</text>
+      <text>登录后用于订单、会员权益和到店核验</text>
+    </view>
+
+    <button class="avatar-field" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+      <view class="avatar-preview">
+        <image wx:if="{{avatar}}" src="{{avatar}}" mode="aspectFill" />
+        <text wx:else>头像</text>
+      </view>
+      <view class="field-main">
+        <text>头像</text>
+        <text>{{avatar ? '已选择，可点击更换' : '点击选择微信头像'}}</text>
+      </view>
+      <text class="field-arrow">›</text>
+    </button>
+
+    <view class="form-row">
+      <view class="field-main">
+        <text>昵称</text>
+        <input
+          type="nickname"
+          value="{{nickname}}"
+          placeholder="设置你的会员昵称"
+          maxlength="20"
+          bindinput="onNicknameInput"
+        />
+      </view>
+    </view>
+
+    <view class="phone-row">
+      <view class="field-main">
+        <text>手机号</text>
+        <text>{{phoneReady ? '微信手机号授权已完成' : '请选择一个微信绑定手机号'}}</text>
+      </view>
+      <button
+        class="phone-picker {{phoneReady ? 'is-ready' : ''}}"
+        open-type="getPhoneNumber"
+        bindgetphonenumber="onGetPhoneNumber"
+      >{{phoneAuthText}}</button>
+    </view>
+  </view>
+
+  <button class="submit-btn" loading="{{submitting}}" disabled="{{submitting}}" bindtap="submit">
+    {{submitting ? '登录中' : '登录 / 创建会员'}}
+  </button>
+  <text class="privacy-note">登录即表示同意使用微信授权信息完成会员识别，本地演示不会展示明文手机号。</text>
+</view>

@@ -1,0 +1,72 @@
+<view class="page store-page">
+  <view class="app-nav">
+    <button class="app-nav-back" bindtap="goBack">‹</button>
+    <text class="app-nav-title">选择门店</text>
+  </view>
+
+  <view class="store-tabs">
+    <view class="store-tab active">选择门店</view>
+    <view class="store-tab">常用/收藏</view>
+  </view>
+
+  <view class="search-bar">
+    <view class="city-entry" bindtap="goCity">
+      <text>{{city}}</text>
+      <text class="down"></text>
+    </view>
+    <view class="divider"></view>
+    <view class="search-box">
+      <image class="search-icon" src="/images/icons/store-search.png" mode="aspectFit"></image>
+      <input placeholder="搜索门店/地点" placeholder-class="search-placeholder" confirm-type="search" bindinput="onSearchInput" />
+    </view>
+  </view>
+
+  <view class="map-wrap" wx:if="{{mapVisible}}">
+    <map
+      id="storeMap"
+      class="store-map"
+      latitude="{{mapCenter.latitude}}"
+      longitude="{{mapCenter.longitude}}"
+      scale="14"
+      markers="{{markers}}"
+      show-location="{{locationEnabled}}"
+    ></map>
+    <view class="map-locate" bindtap="locateMe">
+      <image src="/images/icons/store-locate.png" mode="aspectFit"></image>
+    </view>
+    <view class="map-collapse">收起地图 <text></text></view>
+  </view>
+
+  <scroll-view class="store-list" scroll-y enhanced show-scrollbar="{{false}}">
+    <view class="current-city" bindtap="goCity">
+      <image class="pin-small" src="/images/icons/store-city-pin.png" mode="aspectFit"></image>
+      <text>{{city}}</text>
+    </view>
+
+    <block wx:if="{{stores.length}}">
+      <block wx:for="{{stores}}" wx:key="id">
+        <view class="store-card {{item.id === selectedStoreId ? 'selected' : ''}}" bindtap="chooseStore" data-id="{{item.id}}">
+          <view class="check-corner" wx:if="{{item.id === selectedStoreId}}"><text>✓</text></view>
+          <view class="store-title-row">
+            <image class="star" src="/images/icons/store-star.png" mode="aspectFit"></image>
+            <text class="store-name">{{item.name}}</text>
+          </view>
+          <text class="store-address">{{item.address}}</text>
+          <text class="store-hours">营业时间 {{item.hoursText}}</text>
+          <view class="store-meta">
+            <text class="status-tag {{item.statusClass}}">{{item.statusText}}</text>
+          </view>
+          <view class="store-actions">
+            <view catchtap="callStore" data-id="{{item.id}}" class="round-action">
+              <image src="/images/icons/store-phone.png" mode="aspectFit"></image>
+            </view>
+            <view catchtap="openMap" data-id="{{item.id}}" class="round-action">
+              <image src="/images/icons/store-navigation.png" mode="aspectFit"></image>
+            </view>
+          </view>
+        </view>
+      </block>
+    </block>
+    <view wx:else class="empty">该城市暂无门店，请选择其他城市</view>
+  </scroll-view>
+</view>

@@ -1,0 +1,123 @@
+<view class="page index-page">
+  <view class="swiper-container">
+    <view class="swiper-background">
+      <block wx:for="{{images}}" wx:key="index">
+        <image
+          src="{{item.url || fallbackImage}}"
+          mode="aspectFill"
+          lazy-load
+          bindload="onSwiperImageLoad"
+          binderror="onSwiperImageError"
+          data-index="{{index}}"
+          class="swiper-background-img"
+          style="opacity: {{transitionOpacity[index]}};"
+        />
+      </block>
+    </view>
+    <swiper
+      class="top-swiper"
+      autoplay
+      circular
+      duration="{{durationTime}}"
+      bindtransition="onSwiperTransitionThrottled"
+      bindchange="onSwiperChange"
+      bindtap="onSwiperTap"
+    >
+      <block wx:for="{{images}}" wx:key="index">
+        <swiper-item class="swiper-item" data-index="{{index}}">
+          <!-- <image
+            src="{{item.url || fallbackImage}}"
+            class="swiper-imgs"
+            mode="aspectFill"
+          /> -->
+          <text>{{index}}</text>
+          <view wx:if="{{item.loading}}" class="swiper-item-loading">
+            <loading></loading>
+          </view>
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>
+
+  <view class="main-container">
+  <view class="section user-section">
+    <view class="user-card card" bindtap="goMine">
+      <image class="avatar" src="{{loggedIn ? user.avatar : fallbackImage}}" mode="aspectFill" />
+      <view class="user-main">
+        <view class="user-row">
+          <text class="level">{{loggedIn ? user.level : 'Hi'}}</text>
+          <text class="name">{{loggedIn ? user.nickname : '请登录，解锁会员权益'}}</text>
+        </view>
+        <view class="progress-wrap">
+          <progress percent="{{user.exp * 100 / user.nextExp}}" stroke-width="5" border-radius="12" backgroundColor="#e8edf1" activeColor="#12a86b" />
+          <text class="exp">{{user.exp}}/{{user.nextExp}}</text>
+        </view>
+      </view>
+      <view class="asset">
+        <text>伊幺币</text>
+        <text class="asset-num">{{loggedIn ? user.coins : 0}}</text>
+      </view>
+      <view class="asset">
+        <text>优惠券</text>
+        <text class="asset-num">{{loggedIn ? user.coupons : 0}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="entry-grid">
+      <view class="entry-card walk" hover-class="tap" bindtap="goOpen" data-mode="walkIn">
+        <image src="/images/到店开场.svg" class="entry-img" mode="aspectFit" />
+        <view class="entry-copy">
+          <text class="entry-title">到店开场</text>
+          <text class="entry-desc">到馆即开，快速加入购物车</text>
+        </view>
+      </view>
+      <view class="entry-card reserve" hover-class="tap" bindtap="goOpen" data-mode="reservation">
+        <image src="/images/1.svg" class="entry-img" mode="aspectFit" />
+        <view class="entry-copy">
+          <text class="entry-title">预约开场</text>
+          <text class="entry-desc">选择日期，提前锁定时段</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-head">
+      <text class="section-title">热门场地</text>
+      <text class="section-more" bindtap="goOpen" data-mode="reservation">全部</text>
+    </view>
+    <scroll-view scroll-x class="venue-scroll" enable-flex>
+      <block wx:for="{{hotVenues}}" wx:key="id">
+        <view class="venue-card card" bindtap="goVenue" data-id="{{item.id}}">
+          <image class="venue-img" src="{{item.image}}" mode="aspectFill" lazy-load data-field="venues" data-index="{{index}}" binderror="onImageError" />
+          <text class="venue-name">{{item.name}}</text>
+          <view class="venue-meta">
+            <text class="tag">{{item.sport}}</text>
+            <text class="price">¥{{item.price}}起</text>
+          </view>
+          <text class="venue-sub">剩余可订 {{item.remain}} 个时段</text>
+        </view>
+      </block>
+    </scroll-view>
+  </view>
+
+  <view class="section">
+    <view class="section-head">
+      <text class="section-title">优惠活动</text>
+      <text class="section-more">更多</text>
+    </view>
+    <block wx:for="{{activities}}" wx:key="id">
+      <view class="activity-card card" bindtap="goActivity" data-id="{{item.id}}">
+        <image class="activity-img" src="{{item.image}}" mode="aspectFill" lazy-load data-field="activities" data-index="{{index}}" binderror="onImageError" />
+        <view class="activity-body">
+          <text class="activity-title">{{item.title}}</text>
+          <text class="activity-desc">{{item.summary}}</text>
+          <text class="activity-time">{{item.time}}</text>
+        </view>
+      </view>
+    </block>
+  </view>
+  </view>
+</view>

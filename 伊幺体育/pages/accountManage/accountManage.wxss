@@ -1,0 +1,24 @@
+.account-page {
+  background: #f7f7f7;
+}
+
+.account-list {
+  margin-top: calc(190rpx + env(safe-area-inset-top));
+  background: #ffffff;
+}
+
+.account-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 116rpx;
+  padding: 0 34rpx;
+  color: #111111;
+  font-size: 32rpx;
+  border-bottom: 1rpx solid #eeeeee;
+}
+
+.account-row text:last-child {
+  color: #777777;
+  font-size: 54rpx;
+}

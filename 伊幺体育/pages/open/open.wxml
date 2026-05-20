@@ -1,0 +1,226 @@
+<view class="page open-page">
+  <view id="fixedOpenHeader" class="fixed-open-header">
+    <view class="shop-tools" style="{{shopToolsStyle}}">
+      <view class="seg">
+        <view class="seg-item {{mode === 'walkIn' ? 'active' : ''}}" bindtap="switchMode" data-mode="walkIn">开场</view>
+        <view class="seg-item {{mode === 'reservation' ? 'active' : ''}}" bindtap="switchMode" data-mode="reservation">预约</view>
+      </view>
+      <view class="search">
+        <text class="search-icon">⌕</text>
+        <input placeholder="搜索场地" value="{{keyword}}" bindinput="onSearch" />
+      </view>
+    </view>
+
+    <view wx:if="{{store}}" class="store-line" bindtap="goStore">
+      <view class="store-main">
+        <text class="store-star">★</text>
+        <view>
+          <text class="store-name">{{store.name}}</text>
+          <text class="store-address">{{store.address}}</text>
+          <text class="store-distance">距离您{{store.distance || '0km'}}</text>
+        </view>
+        <text class="store-arrow">›</text>
+      </view>
+      <view class="group-entry">
+        <text class="group-icon">⚑</text>
+        <text>好友拼单</text>
+      </view>
+    </view>
+
+    <view wx:else class="store-line empty-store">
+      <view class="store-main">
+        <text class="store-star">★</text>
+        <view>
+          <text class="store-name">暂无推荐门店</text>
+          <text class="store-distance">开启定位后，为您搜索附近门店</text>
+        </view>
+      </view>
+      <button class="choose-store" bindtap="goCity">选择门店</button>
+    </view>
+
+    <view class="benefit-line">
+      <text>会员开场享折扣，预约时段实时锁定</text>
+      <text class="benefit-more">点击查看 ›</text>
+    </view>
+  </view>
+
+  <view id="collapsiblePromo" class="collapsible-promo" style="{{promoStyle}}">
+    <scroll-view scroll-x class="promo-scroll" enable-flex>
+      <block wx:for="{{promoImages}}" wx:key="title">
+        <view class="promo-card">
+          <image src="{{item.image || fallbackImage}}" mode="aspectFill" />
+        </view>
+      </block>
+    </scroll-view>
+  </view>
+
+  <view id="stickyVenueFilter" class="sticky-venue-filter" style="{{filterStyle}}">
+    <view class="quick-row">
+      <view class="quick-item">
+        <text>门店场地</text>
+      </view>
+      <view class="quick-item muted">
+        <text class="quick-icon quick-icon-discount">惠</text>
+        <text>夏日推荐</text>
+      </view>
+      <view class="quick-item muted">
+        <text class="quick-icon quick-icon-coupon">券</text>
+        <text>用券下单</text>
+      </view>
+    </view>
+
+    <view wx:if="{{mode === 'reservation'}}" class="date-panel">
+      <scroll-view scroll-x class="date-scroll" enable-flex>
+        <block wx:for="{{dates}}" wx:key="value">
+          <view class="date-item {{activeDate === item.value ? 'active' : ''}}" bindtap="chooseDate" data-value="{{item.value}}">
+            <text class="date-num">{{item.dateText}}</text>
+            <text class="date-day">{{item.day}}</text>
+          </view>
+        </block>
+      </scroll-view>
+    </view>
+
+    <view class="sport-panel">
+      <scroll-view scroll-x class="sport-scroll" enable-flex>
+        <block wx:for="{{sportTabs}}" wx:key="key">
+          <view class="sport-item {{activeSport === item.key ? 'active' : ''}}" bindtap="chooseSport" data-sport="{{item.key}}">{{item.label}}</view>
+        </block>
+      </scroll-view>
+    </view>
+
+    <view class="legend">
+      <view><text class="legend-mark using"></text>使用中</view>
+      <view><text class="legend-mark booked"></text>已预定时段</view>
+      <view><text class="legend-mark free"></text>可预定时段</view>
+    </view>
+  </view>
+
+  <view class="open-content-spacer" style="{{contentOffsetStyle}}"></view>
+
+  <view class="venue-list">
+    <block wx:if="{{displayVenues.length}}">
+      <block wx:for="{{displayVenues}}" wx:key="id">
+        <view class="venue-card" bindtap="goVenue" data-id="{{item.id}}">
+          <view class="venue-content">
+            <image class="venue-img" src="{{item.image || fallbackImage}}" mode="aspectFill" />
+            <view class="venue-info">
+              <view class="venue-top">
+                <text class="venue-title">{{item.name}}</text>
+                <text class="venue-state {{item.status === '使用中' ? 'using' : item.status === '不可预定' ? 'disabled' : ''}}">{{item.status}}</text>
+              </view>
+              <view class="tag-row">
+                <block wx:for="{{item.tags}}" wx:key="*this">
+                  <text class="venue-tag {{index === 0 ? 'dark' : ''}}">{{item}}</text>
+                </block>
+              </view>
+              <text class="venue-desc">{{item.desc}}</text>
+              <view class="price-row">
+                <text class="price-label">小程序专享价</text>
+                <text class="price-now">{{item.priceText}}</text>
+                <text class="price-origin">¥{{item.price + 10}} 划线价</text>
+              </view>
+              <view class="member-row">
+                <text>会员专属折扣价</text>
+                <text class="member-price">{{item.memberPriceText}}</text>
+                <button wx:if="{{item.specCount > 1}}" class="spec-btn {{!item.canBook ? 'disabled' : ''}}" catchtap="handleSpecTap" data-id="{{item.id}}">选规格＋</button>
+                <button wx:else class="spec-btn {{!item.canBook ? 'disabled' : ''}}" catchtap="addCart" data-id="{{item.id}}">加入＋</button>
+              </view>
+            </view>
+          </view>
+          <view class="slot-strip">
+            <block wx:for="{{item.timelineSlots}}" wx:for-item="slot" wx:key="hour">
+              <view class="slot">
+                <view class="slot-bar">
+                  <block wx:for="{{slot.segments}}" wx:for-item="seg" wx:key="index">
+                    <view class="slot-segment {{seg.type}}" style="left: {{seg.left}}; width: {{seg.width}};"></view>
+                  </block>
+                </view>
+                <text class="slot-text">{{slot.label}}</text>
+              </view>
+            </block>
+          </view>
+        </view>
+      </block>
+    </block>
+    <view wx:else class="empty card">暂无匹配场地，请切换门店、项目或日期</view>
+  </view>
+
+  <view wx:if="{{cartCount}}" class="cart-summary-bar {{cartPanel === 'items' ? 'panel-open' : ''}}" catchtouchmove="noopTouchMove">
+    <view class="cart-summary-main" bindtap="showCartPanel">
+      <view class="cart-summary-icon">
+        <image class="cart-summary-icon-img" src="{{cartIcon}}" mode="aspectFit" />
+        <text class="cart-summary-badge">{{cartCount}}</text>
+      </view>
+      <view class="cart-summary-info">
+        <view class="cart-summary-line">
+          <text class="cart-summary-label">预估 ¥</text>
+          <text class="cart-summary-total">{{cartPricing.total}}</text>
+          <text class="cart-summary-origin">¥{{cartPricing.originTotal}}</text>
+          <view wx:if="{{cartPricing.discount}}" class="cart-summary-discount" catchtap="toggleDiscountPanel">
+            <text>共减¥{{cartPricing.discount}}</text>
+            <text class="cart-summary-arrow {{cartPanel === 'discount' ? 'open' : ''}}"></text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <button class="cart-summary-checkout" bindtap="checkoutCart">去结算</button>
+  </view>
+
+  <view wx:if="{{cartPanel}}" class="cart-mask" bindtap="closeCartPanel" catchtouchmove="noopTouchMove"></view>
+
+  <view wx:if="{{cartPanel === 'items'}}" class="cart-sheet-items" catchtouchmove="noopTouchMove">
+    <view class="cart-items-head">
+      <view class="cart-items-title">
+        <text class="cart-items-check">✓</text>
+        <text class="cart-items-title-text">已选购场次({{cartCount}}场)</text>
+      </view>
+      <button class="cart-items-trash" bindtap="clearCartItems">
+        <image src="{{deleteIcon}}" mode="aspectFit" />
+      </button>
+    </view>
+    <scroll-view class="cart-items-scroll" scroll-y enhanced show-scrollbar="{{false}}">
+      <block wx:for="{{cartItems}}" wx:key="id">
+        <view class="cart-item-card">
+          <view class="cart-item-check {{item.checked ? 'checked' : ''}}" catchtap="toggleCartItem" data-id="{{item.id}}">✓</view>
+          <image class="cart-item-img" src="{{item.image || fallbackImage}}" mode="aspectFill" />
+          <view class="cart-item-main">
+            <view class="cart-item-copy">
+              <text class="cart-item-name">{{item.venueName}}</text>
+              <text class="cart-item-sub">{{item.displaySub}}</text>
+            </view>
+            <view class="cart-item-foot">
+              <text class="cart-item-currency">¥</text>
+              <text class="cart-item-price">{{item.displayPrice}}</text>
+            </view>
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+  </view>
+
+  <view wx:if="{{cartPanel === 'discount'}}" class="cart-sheet discount-sheet" catchtouchmove="noopTouchMove">
+    <view class="discount-title">
+      <text class="discount-heading">优惠明细</text>
+      <view class="discount-close" bindtap="closeCartPanel">×</view>
+    </view>
+    <view class="discount-row discount-summary"><text>场次合计</text><text>¥{{cartPricing.total}}</text></view>
+    <view class="discount-box">
+      <view class="discount-row"><text>场次总价</text><text>¥{{cartPricing.originTotal}}</text></view>
+      <view class="discount-row">
+        <view class="discount-label">
+          <text>优惠合计</text>
+          <text class="discount-note">实际优惠金额以结算为准</text>
+        </view>
+        <text class="discount-money">-¥{{cartPricing.discount}}</text>
+      </view>
+      <view class="discount-rule">
+        <view class="discount-rule-text">
+          <text class="rule-tag">惠</text>
+          <text>会员专属折扣，场地套餐优惠</text>
+        </view>
+        <text class="discount-money">-¥{{cartPricing.discount}}</text>
+      </view>
+    </view>
+  </view>
+  <login-popup id="loginPopup" bindsuccess="onLoginSuccess"></login-popup>
+</view>

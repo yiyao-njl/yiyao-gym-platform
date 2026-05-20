@@ -1,0 +1,7 @@
+<view class="loading">
+    <view class="loading-item"></view>
+    <view class="loading-item"></view>
+    <view class="loading-item"></view>
+    <view class="loading-item"></view>
+    <view class="loading-item"></view>
+</view>

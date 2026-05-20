@@ -1,0 +1,19 @@
+<view class="page with-fixed-bar">
+  <view class="app-nav">
+    <button class="app-nav-back" bindtap="goBack">‹</button>
+    <text class="app-nav-title">活动详情</text>
+  </view>
+  <image class="activity-hero" src="{{activity.image}}" mode="aspectFill" />
+  <view class="section card activity-detail">
+    <text class="title">{{activity.title}}</text>
+    <text class="time">{{activity.time}}</text>
+    <text class="summary">{{activity.summary}}</text>
+    <view class="rule">
+      <text>活动规则</text>
+      <text>{{activity.rule}}</text>
+    </view>
+  </view>
+  <view class="fixed-bar">
+    <button class="primary-btn fixed-btn" bindtap="join">领取优惠/参与活动</button>
+  </view>
+</view>

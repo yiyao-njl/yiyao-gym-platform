@@ -1,0 +1,44 @@
+<view class="page city-page">
+  <view class="app-nav">
+    <button class="app-nav-back" bindtap="goBack">‹</button>
+    <text class="app-nav-title">选择城市</text>
+  </view>
+
+  <scroll-view class="city-scroll" scroll-y scroll-into-view="{{scrollInto}}">
+    <view id="locate-section" class="city-section">
+      <text class="city-label">定位</text>
+      <view class="locate-chip {{locationCity ? 'success' : ''}}" bindtap="chooseLocationCity">
+        <text class="locate-dot"></text>
+        <text>{{locationCity || '定位失败'}}</text>
+      </view>
+    </view>
+
+    <view id="hot-section" class="city-section hot-section">
+      <text class="city-label">热门城市</text>
+      <view class="city-grid">
+        <block wx:for="{{hotCities}}" wx:key="*this">
+          <view class="city-tag" bindtap="chooseCity" data-city="{{item}}">{{item}}</view>
+        </block>
+      </view>
+    </view>
+
+    <view class="city-groups">
+      <block wx:for="{{cities}}" wx:key="letter">
+        <view id="letter-{{item.letter}}" class="city-group">
+          <text class="letter">{{item.letter}}</text>
+          <block wx:for="{{item.names}}" wx:for-item="city" wx:key="*this">
+            <view class="city-row" bindtap="chooseCity" data-city="{{city}}">{{city}}</view>
+          </block>
+        </view>
+      </block>
+    </view>
+  </scroll-view>
+
+  <view class="letter-index">
+    <text bindtap="jumpTop" class="index-word">定位</text>
+    <text bindtap="jumpHot" class="index-word">热门</text>
+    <block wx:for="{{letters}}" wx:key="*this">
+      <text bindtap="jumpLetter" data-letter="{{item}}">{{item}}</text>
+    </block>
+  </view>
+</view>

@@ -1,0 +1,31 @@
+.pay-item,
+.summary {
+  padding: 26rpx;
+  margin-bottom: 18rpx;
+}
+
+.pay-title {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 800;
+}
+
+.pay-sub {
+  display: block;
+  margin-top: 10rpx;
+  color: #7f8b99;
+  font-size: 24rpx;
+}
+
+.summary view {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 66rpx;
+  color: #5d6975;
+  font-size: 26rpx;
+}
+
+.fixed-btn {
+  flex: 1;
+}

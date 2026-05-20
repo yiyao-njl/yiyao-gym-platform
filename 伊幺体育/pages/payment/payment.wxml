@@ -1,0 +1,27 @@
+<view class="page with-fixed-bar">
+  <view class="app-nav">
+    <button class="app-nav-back" bindtap="goBack"></button>
+    <text class="app-nav-title">订单确认</text>
+  </view>
+  <view class="section">
+    <block wx:for="{{items}}" wx:key="id">
+      <view class="pay-item card">
+        <text class="pay-title">{{item.venueName}}</text>
+        <text class="pay-sub">{{item.storeName}} · {{item.sport}}</text>
+        <text class="pay-sub">{{item.packageName}} · {{item.date}} {{item.startTime}}-{{item.endTime}}</text>
+        <text class="price">¥{{item.price}} × {{item.quantity || 1}}</text>
+      </view>
+    </block>
+    <view wx:if="{{!items.length}}" class="empty card">暂无待支付场次</view>
+  </view>
+  <view class="section card summary">
+    <view><text>场次总价</text><text>¥{{originTotal}}</text></view>
+    <view><text>优惠合计</text><text>-¥{{discount}}</text></view>
+    <view><text>应付金额</text><text class="price">¥{{total}}</text></view>
+  </view>
+  <view class="fixed-bar">
+    <button class="ghost-btn fixed-btn" bindtap="failPay">模拟失败</button>
+    <button class="primary-btn fixed-btn" bindtap="pay">微信支付</button>
+  </view>
+  <login-popup id="loginPopup" bindsuccess="onLoginSuccess"></login-popup>
+</view>

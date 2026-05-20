@@ -1,0 +1,44 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: auth-service
+          uri: lb://gym-auth-service
+          predicates:
+            - Path=/api/auth/**,/api/admin/me,/api/admin/accounts/**,/api/admin/logs/**
+        - id: marketing-service
+          uri: lb://gym-marketing-service
+          predicates:
+            - Path=/api/app/home,/api/app/banners,/api/app/activities/**,/api/app/coupons/**,/api/admin/coupons/**,/api/admin/activities/**
+        - id: venue-service
+          uri: lb://gym-venue-service
+          predicates:
+            - Path=/api/app/cities/**,/api/app/stores/**,/api/app/venues/**,/api/app/reservations/**,/api/admin/stores/**,/api/admin/venues/**,/api/admin/venue-types/**,/api/admin/venue-packages/**
+        - id: order-service
+          uri: lb://gym-order-service
+          predicates:
+            - Path=/api/app/cart/**,/api/app/orders/**,/api/admin/orders/**,/api/admin/refunds/**
+        - id: payment-service
+          uri: lb://gym-payment-service
+          predicates:
+            - Path=/api/app/payments/**,/api/admin/payments/**
+        - id: member-service
+          uri: lb://gym-member-service
+          predicates:
+            - Path=/api/app/members/**,/api/admin/members/**,/api/admin/users/**
+        - id: review-service
+          uri: lb://gym-review-service
+          predicates:
+            - Path=/api/app/orders/*/review,/api/app/venues/*/reviews,/api/admin/reviews/**
+        - id: message-service
+          uri: lb://gym-message-service
+          predicates:
+            - Path=/internal/messages/**
+        - id: user-service
+          uri: lb://gym-user-service
+          predicates:
+            - Path=/api/app/users/**
+        - id: statistics-service
+          uri: lb://gym-statistics-service
+          predicates:
+            - Path=/api/admin/statistics/**

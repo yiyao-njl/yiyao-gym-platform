@@ -1,0 +1,46 @@
+.detail {
+  padding: 28rpx;
+}
+
+.status-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.detail-title {
+  font-size: 34rpx;
+  font-weight: 800;
+}
+
+.detail-sub {
+  display: block;
+  margin-top: 12rpx;
+  color: #7f8b99;
+  font-size: 24rpx;
+}
+
+.goods {
+  padding: 22rpx 0;
+  margin-top: 18rpx;
+  border-top: 1rpx solid #eef3f5;
+}
+
+.goods-title {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 800;
+}
+
+.tip {
+  padding: 20rpx;
+  margin: 14rpx 0 24rpx;
+  color: #f08b16;
+  font-size: 24rpx;
+  border-radius: 14rpx;
+  background: #fff8e8;
+}
+
+.back-btn {
+  margin-top: 24rpx;
+}

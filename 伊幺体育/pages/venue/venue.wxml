@@ -1,0 +1,105 @@
+<view class="page with-fixed-bar {{startPickerVisible ? 'modal-open' : ''}}" style="{{startPickerPageStyle}}">
+  <view class="venue-hero">
+    <image class="hero-img" src="{{venue.image}}" mode="aspectFill" />
+    <view class="venue-nav-overlay">
+      <view class="venue-left-actions" style="{{venueNavStyle}}">
+        <button class="venue-action venue-back" hover-class="none" bindtap="goBack"></button>
+        <view class="venue-action-divider"></view>
+        <button class="venue-action venue-share" hover-class="none" open-type="share"></button>
+      </view>
+    </view>
+  </view>
+
+  <view class="section detail-card card">
+    <text class="venue-name">{{venue.name}}</text>
+    <text class="venue-meta">{{gym.name}} · {{venue.sport}} · {{venue.status}}</text>
+    <view class="time-slots {{timelineFixedWidth ? 'fixed-width' : ''}}">
+      <block wx:for="{{timelineRows}}" wx:for-item="row" wx:key="index">
+        <view class="time-slot-row">
+          <block wx:for="{{row}}" wx:for-item="item" wx:key="hour">
+            <view class="slot">
+              <view class="slot-bar">
+                <block wx:for="{{item.segments}}" wx:for-item="seg" wx:key="index">
+                  <view class="slot-segment {{seg.type}}" style="left: {{seg.left}}; width: {{seg.width}};"></view>
+                </block>
+              </view>
+              <text class="slot-text">{{item.label}}</text>
+            </view>
+          </block>
+        </view>
+      </block>
+    </view>
+    <view class="slot-legend">
+      <view><text class="legend-mark using"></text>使用中</view>
+      <view><text class="legend-mark booked"></text>已预定</view>
+      <view><text class="legend-mark free"></text>可预定</view>
+    </view>
+  </view>
+
+  <view class="section card block spec-block">
+    <view class="block-head">
+      <text class="block-title">套餐规格</text>
+      <text wx:if="{{!canBook}}" class="time-tip inline">当前时间已到本次可连续下单截止点，请稍后重新下单。</text>
+    </view>
+    <view class="pkg-list">
+      <block wx:for="{{packageOptions}}" wx:key="id">
+        <view class="pkg {{activePkg && activePkg.id === item.id ? 'active' : ''}} {{!canBook ? 'disabled' : ''}} {{item.isCustom ? 'custom' : ''}}" bindtap="choosePkg" data-id="{{item.id}}">
+          <text class="pkg-name">{{item.name}}</text>
+          <text class="pkg-price">{{item.priceText}}</text>
+          <text class="pkg-desc">{{item.desc}}</text>
+        </view>
+      </block>
+    </view>
+
+    <view wx:if="{{activePkg && activePkg.isCustom}}" class="custom-time-panel">
+      <view class="form-row">
+        <text>开始时间</text>
+        <view class="time-picker" bindtap="openStartPicker">{{startTimeText || '请选择'}}</view>
+      </view>
+      <view class="form-row">
+        <text>结束时间</text>
+        <picker mode="selector" range="{{endOptions}}" range-key="label" value="{{endIndex}}" disabled="{{!canBook || !endOptions.length}}" bindchange="changeEnd">
+          <view class="time-picker">{{endTimeText || '请选择'}}</view>
+        </picker>
+      </view>
+    </view>
+  </view>
+
+  <view class="section card block">
+    <text class="block-title">价格明细</text>
+    <view class="summary-row"><text>已选套餐</text><text>{{activePkg ? activePkg.name : '未选择'}}</text></view>
+    <view class="summary-row"><text>场地</text><text>{{venue.name}}</text></view>
+    <view class="summary-row"><text>时段</text><text>{{startTimeText}} - {{endTimeText}}</text></view>
+    <view class="summary-row"><text>优惠后价格</text><text class="price">¥{{total}}</text></view>
+  </view>
+
+  <view class="fixed-bar">
+    <button class="ghost-btn fixed-btn" bindtap="addCart">加入购物车</button>
+    <button class="primary-btn fixed-btn" bindtap="buyNow">立即开场</button>
+  </view>
+
+  <view wx:if="{{startPickerVisible}}" class="time-picker-mask" catchtouchmove="noopTouchMove"></view>
+  <view wx:if="{{startPickerVisible}}" class="start-time-sheet">
+    <view class="start-time-actions" catchtouchmove="noopTouchMove">
+      <button class="picker-action cancel" bindtap="closeStartPicker">取消</button>
+      <button wx:if="{{canStepStartBackward}}" class="picker-step-btn left" catchtap="stepStartPicker" data-delta="-30">
+        <text>«</text>
+      </button>
+      <button wx:if="{{canStepStartForward}}" class="picker-step-btn right" catchtap="stepStartPicker" data-delta="30">
+        <text>»</text>
+      </button>
+      <button class="picker-action confirm" bindtap="confirmStartPicker">确定</button>
+    </view>
+    <view class="start-picker-wrap" catchwheel="onStartPickerWheel">
+      <view class="start-picker-indicator"></view>
+      <scroll-view class="start-picker-view" scroll-y scroll-top="{{pendingStartScrollTop}}" scroll-with-animation="{{startPickerScrollAnimation}}" bindscroll="onStartPickerScroll" catchwheel="onStartPickerWheel">
+        <view class="start-picker-spacer"></view>
+        <block wx:for="{{startOptions}}" wx:key="value">
+          <view class="start-picker-item {{pendingStartIndex === index ? 'active' : ''}}" bindtap="tapStartPickerItem" data-index="{{index}}">{{item.label}}</view>
+        </block>
+        <view class="start-picker-spacer"></view>
+      </scroll-view>
+    </view>
+  </view>
+  <login-popup id="loginPopup" bindsuccess="onLoginSuccess"></login-popup>
+</view>

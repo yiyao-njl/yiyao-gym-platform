@@ -1,0 +1,120 @@
+.logout-page {
+  background: #f7f7f7;
+}
+
+.logout-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: calc(330rpx + env(safe-area-inset-top));
+  padding: 0 28rpx;
+  text-align: center;
+}
+
+.door-icon {
+  position: relative;
+  width: 168rpx;
+  height: 128rpx;
+  opacity: 0.62;
+}
+
+.door-icon::before {
+  content: "";
+  position: absolute;
+  left: 22rpx;
+  top: 0;
+  width: 74rpx;
+  height: 124rpx;
+  border-radius: 8rpx;
+  background: linear-gradient(105deg, #ffffff 0%, #dfe4ec 100%);
+  box-shadow: 12rpx 10rpx 30rpx rgba(80, 90, 110, 0.12);
+  transform: skewY(-16deg);
+}
+
+.door-icon::after {
+  content: "";
+  position: absolute;
+  right: 18rpx;
+  top: 44rpx;
+  width: 54rpx;
+  height: 28rpx;
+  border-radius: 4rpx;
+  background: #b8c0cb;
+}
+
+.logout-main text {
+  margin-top: 54rpx;
+  color: #777777;
+  font-size: 32rpx;
+}
+
+.logout-main button {
+  width: 704rpx;
+  height: 88rpx;
+  margin-top: 132rpx;
+  color: #f2d18b;
+  font-size: 32rpx;
+  line-height: 88rpx;
+  border-radius: 48rpx;
+  background: #4e4e4e;
+}
+
+.logout-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.56);
+}
+
+.logout-dialog {
+  width: 650rpx;
+  padding: 54rpx 42rpx 44rpx;
+  border-radius: 24rpx;
+  background: #ffffff;
+}
+
+.dialog-title,
+.dialog-content {
+  display: block;
+  text-align: center;
+}
+
+.dialog-title {
+  color: #222222;
+  font-size: 42rpx;
+}
+
+.dialog-content {
+  margin-top: 36rpx;
+  color: #333333;
+  font-size: 31rpx;
+}
+
+.dialog-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28rpx;
+  margin-top: 52rpx;
+}
+
+.dialog-actions button {
+  width: 100% !important;
+  height: 82rpx;
+  margin: 0 !important;
+  font-size: 31rpx;
+  line-height: 82rpx;
+  border-radius: 44rpx;
+}
+
+.dialog-actions .cancel {
+  color: #333333;
+  background: #f7f7f7;
+}
+
+.dialog-actions .confirm {
+  color: #f2d18b;
+  background: #4e4e4e;
+}

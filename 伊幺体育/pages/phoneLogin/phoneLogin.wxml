@@ -1,0 +1,24 @@
+<view class="page phone-login-page">
+  <view class="app-nav clean-nav">
+    <button class="app-nav-back" bindtap="goBack"></button>
+  </view>
+
+  <view class="brand-box">
+    <image src="/images/伊幺体育.jpg" mode="aspectFill" />
+    <text>伊幺体育</text>
+  </view>
+
+  <view class="login-form">
+    <view class="input-row">
+      <text>+86</text>
+      <input type="number" maxlength="11" value="{{phone}}" placeholder="请输入手机号" bindinput="onPhoneInput" />
+    </view>
+    <view class="input-row">
+      <input type="number" maxlength="6" value="{{code}}" placeholder="请输入验证码" bindinput="onCodeInput" />
+      <button bindtap="sendCode">{{countdown > 0 ? countdown + 's' : '获取验证码'}}</button>
+    </view>
+  </view>
+
+  <button class="login-btn" bindtap="login">登录</button>
+  <view class="help" bindtap="goHelp">无法接收短信，<text>查看帮助</text></view>
+</view>

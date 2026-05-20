@@ -1,0 +1,31 @@
+<view class="page with-fixed-bar">
+  <view class="app-nav">
+    <button class="app-nav-back" bindtap="goBack">‹</button>
+    <text class="app-nav-title">购物车</text>
+  </view>
+  <view class="section">
+    <block wx:if="{{cart.length}}">
+      <block wx:for="{{cart}}" wx:key="id">
+        <view class="cart-item card">
+          <view class="check {{item.checked ? 'checked' : ''}}" bindtap="toggle" data-id="{{item.id}}">{{item.checked ? '✓' : ''}}</view>
+          <view class="cart-main">
+            <text class="cart-title">{{item.venueName}}</text>
+            <text class="cart-sub">{{item.storeName}} · {{item.sport}}</text>
+            <text class="cart-sub">{{item.packageName}} · {{item.date}} {{item.startTime}}-{{item.endTime}}</text>
+            <text class="price">¥{{item.price}} × {{item.quantity || 1}}</text>
+          </view>
+          <button class="remove" bindtap="remove" data-id="{{item.id}}">删除</button>
+        </view>
+      </block>
+    </block>
+    <view wx:else class="empty card">购物车为空，去开场页选择场地吧</view>
+  </view>
+  <view class="fixed-bar">
+    <view class="total">
+      <text>已选 {{checkedCount}} 场</text>
+      <text class="price">¥{{total}}</text>
+    </view>
+    <button class="primary-btn checkout" bindtap="checkout">结算</button>
+  </view>
+  <login-popup id="loginPopup" bindsuccess="onLoginSuccess"></login-popup>
+</view>

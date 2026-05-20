@@ -1,0 +1,54 @@
+<view class="page orders-page">
+  <view class="order-nav">
+    <text class="order-nav-title">我的订单</text>
+  </view>
+  <view class="order-tabs">
+    <view class="order-tab {{active === '预约订单' ? 'active' : ''}}" bindtap="switchTab" data-type="预约订单">预约订单</view>
+    <view class="order-tab {{active === '开场订单' ? 'active' : ''}}" bindtap="switchTab" data-type="开场订单">开场订单</view>
+  </view>
+  <view class="order-content">
+    <block wx:if="{{displayOrders.length}}">
+      <view class="order-list">
+        <block wx:for="{{displayOrders}}" wx:key="id">
+          <view class="order-card" bindtap="goDetail" data-id="{{item.id}}">
+            <view class="pickup-badge">{{item.badgeText}}</view>
+            <view class="order-main">
+              <view class="order-head">
+                <text class="order-title">{{item.storeName}}</text>
+                <view class="order-status-wrap">
+                  <text class="order-status {{item.statusClass}}">{{item.status}}</text>
+                  <text class="order-arrow">›</text>
+                </view>
+              </view>
+              <text class="order-time">{{item.createdAtText}}</text>
+              <view class="order-body">
+                <view class="order-thumb">
+                  <text>伊幺</text>
+                </view>
+                <text class="order-summary">{{item.summary}}</text>
+                <view class="order-price-box">
+                  <text class="order-price">¥{{item.total}}</text>
+                  <text class="order-count">{{item.countText}}</text>
+                </view>
+              </view>
+              <view class="order-actions" catchtap="noop">
+                <button wx:if="{{item.status === '待支付'}}" class="action-btn light" bindtap="payAgain" data-id="{{item.id}}">去支付</button>
+                <button wx:if="{{item.status === '已支付'}}" class="action-btn light" bindtap="refund" data-id="{{item.id}}">申请退款</button>
+                <button wx:if="{{item.status !== '已取消'}}" class="action-btn light" bindtap="cancelOrder" data-id="{{item.id}}">取消订单</button>
+                <button class="action-btn primary" bindtap="again">再次预约</button>
+              </view>
+            </view>
+          </view>
+        </block>
+        <text class="order-end">没有更多数据了</text>
+      </view>
+    </block>
+    <view wx:else class="order-empty">
+      <view class="empty-illustration">
+        <view class="empty-paper"></view>
+        <view class="empty-roll"></view>
+      </view>
+      <text>{{emptyText}}</text>
+    </view>
+  </view>
+</view>

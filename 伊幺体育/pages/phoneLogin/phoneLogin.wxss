@@ -1,0 +1,87 @@
+.phone-login-page {
+  padding: calc(176rpx + env(safe-area-inset-top)) 46rpx 0;
+  background: #ffffff;
+}
+
+.clean-nav {
+  background: #ffffff;
+}
+
+.clean-nav .app-nav-title {
+  display: none;
+}
+
+.brand-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 80rpx;
+}
+
+.brand-box image {
+  width: 132rpx;
+  height: 132rpx;
+  border-radius: 34rpx;
+}
+
+.brand-box text {
+  margin-top: 28rpx;
+  color: #126bdb;
+  font-size: 44rpx;
+  font-weight: 900;
+}
+
+.login-form {
+  margin-top: 128rpx;
+}
+
+.input-row {
+  display: flex;
+  align-items: center;
+  height: 112rpx;
+  border-bottom: 1rpx solid #e5e5e5;
+}
+
+.input-row text {
+  margin-right: 16rpx;
+  color: #111111;
+  font-size: 34rpx;
+}
+
+.input-row input {
+  flex: 1;
+  min-width: 0;
+  color: #111111;
+  font-size: 34rpx;
+}
+
+.input-row button {
+  width: 156rpx;
+  height: 58rpx;
+  color: #f2d18b;
+  font-size: 25rpx;
+  line-height: 58rpx;
+  border-radius: 32rpx;
+  background: #4e4e4e;
+}
+
+.login-btn {
+  height: 88rpx;
+  margin-top: 80rpx;
+  color: #f2d18b;
+  font-size: 32rpx;
+  line-height: 88rpx;
+  border-radius: 48rpx;
+  background: #4e4e4e;
+}
+
+.help {
+  margin-top: 56rpx;
+  color: #777777;
+  font-size: 28rpx;
+  text-align: center;
+}
+
+.help text {
+  color: #b9975f;
+}

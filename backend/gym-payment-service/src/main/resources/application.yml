@@ -1,0 +1,24 @@
+server:
+  port: 8105
+spring:
+  application:
+    name: gym-payment-service
+  datasource:
+    url: ${GYM_DATASOURCE_URL:jdbc:mysql://localhost:3306/gym_operation?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai}
+    username: ${GYM_DATASOURCE_USERNAME:gym}
+    password: ${GYM_DATASOURCE_PASSWORD:gym}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      host: ${GYM_REDIS_HOST:localhost}
+      port: ${GYM_REDIS_PORT:6379}
+  rabbitmq:
+    host: ${GYM_RABBITMQ_HOST:localhost}
+    port: ${GYM_RABBITMQ_PORT:5672}
+    username: ${GYM_RABBITMQ_USERNAME:gym}
+    password: ${GYM_RABBITMQ_PASSWORD:gym}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

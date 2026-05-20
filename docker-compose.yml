@@ -1,0 +1,229 @@
+name: gym-operation
+
+services:
+  mysql:
+    image: mysql:8.3
+    container_name: gym-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: gym_operation
+      MYSQL_USER: gym
+      MYSQL_PASSWORD: gym
+      TZ: Asia/Shanghai
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_0900_ai_ci
+    ports:
+      - "3306:3306"
+    volumes:
+      - gym-mysql-data:/var/lib/mysql
+      - ./backend/scripts/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-ugym", "-pgym"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: gym-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - gym-redis-data:/data
+
+  rabbitmq:
+    image: rabbitmq:3.12-management-alpine
+    container_name: gym-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: gym
+      RABBITMQ_DEFAULT_PASS: gym
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - gym-rabbitmq-data:/var/lib/rabbitmq
+
+  nacos:
+    image: nacos/nacos-server:v2.3.2
+    container_name: gym-nacos
+    environment:
+      MODE: standalone
+      NACOS_AUTH_ENABLE: "false"
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+
+  gym-auth-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        MODULE: gym-auth-service
+    env_file: .env
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+
+  gym-user-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        MODULE: gym-user-service
+    env_file: .env
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  gym-venue-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        MODULE: gym-venue-service
+    env_file: .env
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  gym-order-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        MODULE: gym-order-service
+    env_file: .env
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+
+  gym-payment-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        MODULE: gym-payment-service
+    env_file: .env
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+
+  gym-marketing-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        MODULE: gym-marketing-service
+    env_file: .env
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  gym-member-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        MODULE: gym-member-service
+    env_file: .env
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  gym-review-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        MODULE: gym-review-service
+    env_file: .env
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  gym-statistics-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        MODULE: gym-statistics-service
+    env_file: .env
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  gym-message-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        MODULE: gym-message-service
+    env_file: .env
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+
+  gym-gateway:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        MODULE: gym-gateway
+    environment:
+      GYM_AUTH_URI: http://gym-auth-service:8101
+      GYM_USER_URI: http://gym-user-service:8102
+      GYM_VENUE_URI: http://gym-venue-service:8103
+      GYM_ORDER_URI: http://gym-order-service:8104
+      GYM_PAYMENT_URI: http://gym-payment-service:8105
+      GYM_MARKETING_URI: http://gym-marketing-service:8106
+      GYM_MEMBER_URI: http://gym-member-service:8107
+      GYM_REVIEW_URI: http://gym-review-service:8108
+      GYM_MESSAGE_URI: http://gym-message-service:8109
+      GYM_STATISTICS_URI: http://gym-statistics-service:8110
+    depends_on:
+      - gym-auth-service
+      - gym-user-service
+      - gym-venue-service
+      - gym-order-service
+      - gym-payment-service
+      - gym-marketing-service
+      - gym-member-service
+      - gym-review-service
+      - gym-statistics-service
+      - gym-message-service
+
+  admin-web:
+    build:
+      context: ./admin-web
+      dockerfile: Dockerfile
+    depends_on:
+      - gym-gateway
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: gym-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./deploy/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - admin-web
+      - gym-gateway
+
+volumes:
+  gym-mysql-data:
+  gym-redis-data:
+  gym-rabbitmq-data:

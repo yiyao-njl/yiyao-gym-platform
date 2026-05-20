@@ -1,0 +1,58 @@
+.coupon-tabs {
+  display: flex;
+  gap: 12rpx;
+  margin: 24rpx 24rpx 0;
+}
+
+.coupon-tabs view {
+  flex: 1;
+  height: 68rpx;
+  color: #6f7b86;
+  line-height: 68rpx;
+  text-align: center;
+  border-radius: 34rpx;
+  background: #ffffff;
+}
+
+.coupon-tabs .active {
+  color: #ffffff;
+  background: #12a86b;
+}
+
+.coupon {
+  display: flex;
+  align-items: center;
+  min-height: 150rpx;
+  padding: 24rpx;
+  margin-bottom: 18rpx;
+}
+
+.amount {
+  width: 116rpx;
+  color: #f08b16;
+  font-size: 44rpx;
+  font-weight: 900;
+}
+
+.coupon-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.coupon-title {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 800;
+}
+
+.coupon-sub {
+  display: block;
+  margin-top: 8rpx;
+  color: #7f8b99;
+  font-size: 23rpx;
+}
+
+.state {
+  color: #12a86b;
+  font-size: 24rpx;
+}

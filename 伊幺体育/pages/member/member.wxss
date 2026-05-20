@@ -1,0 +1,92 @@
+.member-page {
+  color: #222222;
+  background: #f7f7f7;
+}
+
+.rule-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 104rpx;
+  margin-top: calc(176rpx + env(safe-area-inset-top));
+  padding: 0 20rpx;
+  background: #ffffff;
+}
+
+.rule-tabs view {
+  position: relative;
+  height: 104rpx;
+  color: #444444;
+  font-size: 30rpx;
+  line-height: 104rpx;
+  text-align: center;
+}
+
+.rule-tabs .active {
+  color: #111111;
+  font-weight: 800;
+}
+
+.rule-tabs .active::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 12rpx;
+  width: 58rpx;
+  height: 7rpx;
+  border-radius: 7rpx;
+  background: #12a86b;
+  transform: translateX(-50%);
+}
+
+.hero-rule-card {
+  min-height: 560rpx;
+  margin: 44rpx 48rpx 0;
+  padding: 68rpx 58rpx;
+  border-radius: 18rpx;
+  background: linear-gradient(145deg, #eef8f2 0%, #d9f0ef 100%);
+  box-shadow: 0 18rpx 44rpx rgba(25, 43, 64, 0.07);
+}
+
+.brand {
+  display: block;
+  color: #12a86b;
+  font-size: 34rpx;
+  font-weight: 900;
+}
+
+.rule-title {
+  display: block;
+  margin-top: 42rpx;
+  color: #111111;
+  font-size: 58rpx;
+  font-weight: 900;
+  line-height: 74rpx;
+}
+
+.rule-sub {
+  display: block;
+  margin-top: 22rpx;
+  color: #222222;
+  font-size: 32rpx;
+  line-height: 48rpx;
+}
+
+.rule-copy {
+  padding: 10rpx 28rpx 52rpx;
+}
+
+.copy-title {
+  display: block;
+  margin-bottom: 28rpx;
+  color: #555555;
+  font-size: 34rpx;
+}
+
+.copy-line {
+  display: block;
+  margin-bottom: 18rpx;
+  color: #111111;
+  font-size: 30rpx;
+  line-height: 48rpx;
+}

@@ -1,0 +1,82 @@
+<view class="page mine-page">
+  <view class="mine-hero">
+    <view class="profile-row" bindtap="editProfile">
+      <image class="avatar" src="{{user.avatar}}" mode="aspectFill" />
+      <view class="profile-main">
+        <text class="nickname">{{loggedIn ? user.nickname : '点击登录'}}</text>
+        <text class="phone">{{profileSub}}</text>
+      </view>
+      <text class="profile-arrow">›</text>
+    </view>
+    <view class="asset-strip" wx:if="{{loggedIn}}">
+      <view><text>{{user.exp}}</text><text>经验值</text></view>
+      <view bindtap="goCoupon"><text>{{user.coupons}}</text><text>优惠券</text></view>
+      <view><text>{{user.coins}}</text><text>伊幺币</text></view>
+      <view bindtap="goMember"><text>{{user.benefitsUnlocked}}</text><text>已解锁权益</text></view>
+    </view>
+  </view>
+
+  <view wx:if="{{loggedIn}}" class="level-panel">
+    <view class="level-card" bindtap="goExpDetail">
+      <view class="level-head">
+        <view>
+          <text class="level-badge">{{user.level}}</text>
+          <text class="level-name">{{user.levelName}}</text>
+        </view>
+        <text class="current-tag">当前等级</text>
+      </view>
+      <view class="progress-wrap">
+        <view class="progress-bar"><view style="width: {{progressPercent}}%;"></view></view>
+        <text class="progress-text">{{user.exp}}/{{user.nextExp}} 距离下一等级还差 {{expGap}} 经验值 ›</text>
+      </view>
+      <text class="expire">{{user.memberExpire}} 到期</text>
+    </view>
+    <view class="gift-row" bindtap="goMember">
+      <view>
+        <text class="gift-title">升级礼遇</text>
+        <text class="gift-sub">每升一级，都有运动好礼相送</text>
+      </view>
+      <view>
+        <text class="gift-title">等级特权</text>
+        <text class="gift-sub">已解锁 {{user.benefitsUnlocked}} 项权益</text>
+      </view>
+    </view>
+  </view>
+
+  <view wx:else class="login-card card">
+    <text>登录后查看会员等级、经验值和专属权益</text>
+    <button loading="{{loginLoading}}" disabled="{{loginLoading}}" bindtap="login">{{loginLoading ? '登录中' : '微信授权登录'}}</button>
+  </view>
+
+  <view class="section card coupon-section">
+    <view class="section-head">
+      <text class="section-title">我的优惠</text>
+      <text class="section-more" bindtap="goCoupon">更多 ›</text>
+    </view>
+    <view class="coupon-grid">
+      <view class="coupon-mini" bindtap="goCoupon">
+        <text>满99减20</text>
+        <text>预约通用券</text>
+      </view>
+      <view class="coupon-mini" bindtap="goCoupon">
+        <text>羽毛球8折</text>
+        <text>项目专属券</text>
+      </view>
+      <view class="coupon-mini" bindtap="goCoupon">
+        <text>新人体验</text>
+        <text>首次下单可用</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section card service-card">
+    <view class="service-row" bindtap="goOrders"><text>历史订单</text><text>›</text></view>
+    <view class="service-row" bindtap="goMember"><text>权益规则</text><text>›</text></view>
+    <view class="service-row" bindtap="goExpDetail"><text>经验值明细</text><text>›</text></view>
+    <view class="service-row"><text>账号设置</text><text>›</text></view>
+  </view>
+
+  <view class="section">
+    <button wx:if="{{loggedIn}}" class="danger-btn" bindtap="logout">账号管理</button>
+  </view>
+</view>

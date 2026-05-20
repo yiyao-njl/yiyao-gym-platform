@@ -1,0 +1,27 @@
+<view class="page">
+  <view class="app-nav">
+    <button class="app-nav-back" bindtap="goBack"></button>
+    <text class="app-nav-title">优惠券</text>
+  </view>
+  <view class="coupon-tabs">
+    <block wx:for="{{tabs}}" wx:key="*this">
+      <view class="{{active === item ? 'active' : ''}}" bindtap="switchTab" data-status="{{item}}">{{item}}</view>
+    </block>
+  </view>
+  <view class="section">
+    <block wx:if="{{visibleCoupons.length}}">
+      <block wx:for="{{visibleCoupons}}" wx:key="id">
+        <view class="coupon card">
+          <view class="amount">¥{{item.amount}}</view>
+          <view class="coupon-body">
+            <text class="coupon-title">{{item.title}}</text>
+            <text class="coupon-sub">满 {{item.threshold}} 可用 · {{item.scope}}</text>
+            <text class="coupon-sub">有效期至 {{item.expire}}</text>
+          </view>
+          <text class="state">{{item.status}}</text>
+        </view>
+      </block>
+    </block>
+    <view wx:else class="empty card">暂无{{active}}优惠券</view>
+  </view>
+</view>

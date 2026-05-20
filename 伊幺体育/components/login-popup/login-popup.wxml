@@ -1,0 +1,51 @@
+<view wx:if="{{visible}}" class="login-popup-root" catchtouchmove="noop">
+  <view class="login-popup-mask" bindtap="close"></view>
+  <view class="login-popup">
+    <button class="popup-close" bindtap="close">×</button>
+    <view class="benefit-hero">
+      <text class="spark left">✦</text>
+      <text class="spark right">✦</text>
+      <text class="benefit-title">新会员专享</text>
+      <text class="benefit-sub">注册得场地券 首单更优惠</text>
+      <view class="sports-row">
+        <view>篮球</view>
+        <view>羽毛球</view>
+        <view>乒乓球</view>
+        <view>气排球</view>
+      </view>
+      <view class="coupon-row">
+        <view><text>8折</text><text>场地券</text></view>
+        <view><text>20元</text><text>满减券</text></view>
+        <view><text>6元</text><text>预约券</text></view>
+        <view><text>4元</text><text>到店券</text></view>
+      </view>
+    </view>
+
+    <button
+      wx:if="{{agreed}}"
+      class="one-key-btn"
+      open-type="getPhoneNumber"
+      bindgetphonenumber="onGetPhoneNumber"
+    >一键登录</button>
+    <button wx:else class="one-key-btn" bindtap="tapOneKey">一键登录</button>
+
+    <button class="other-login" bindtap="goPhoneLogin">其他号码登录</button>
+    <view class="agreement-line" bindtap="toggleAgreement">
+      <view class="check {{agreed ? 'checked' : ''}}">✓</view>
+      <text>已阅读并同意</text>
+      <text class="link">《用户须知》</text>
+      <text class="link">《隐私政策》</text>
+    </view>
+  </view>
+
+  <view wx:if="{{agreementVisible}}" class="agreement-mask" catchtouchmove="noop">
+    <view class="agreement-backdrop"></view>
+    <view class="agreement-dialog">
+      <text class="agreement-title">已阅读并同意《用户须知》《隐私政策》</text>
+      <view class="agreement-actions">
+        <button class="plain" bindtap="disagreeAgreement">不同意</button>
+        <button class="dark" bindtap="agreeAgreement">同意</button>
+      </view>
+    </view>
+  </view>
+</view>

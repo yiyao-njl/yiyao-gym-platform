@@ -1,0 +1,25 @@
+<view class="page member-page">
+  <view class="app-nav">
+    <button class="app-nav-back" bindtap="goBack"></button>
+    <text class="app-nav-title">权益规则</text>
+  </view>
+
+  <view class="rule-tabs">
+    <block wx:for="{{tabs}}" wx:key="id">
+      <view class="{{active === item.id ? 'active' : ''}}" bindtap="switchTab" data-id="{{item.id}}">{{item.title}}</view>
+    </block>
+  </view>
+
+  <view class="hero-rule-card">
+    <text class="brand">伊幺体育 VIP</text>
+    <text class="rule-title">{{activeBenefit.title}}</text>
+    <text class="rule-sub">{{activeBenefit.desc}}</text>
+  </view>
+
+  <view class="section rule-copy">
+    <text class="copy-title">尊享权益</text>
+    <block wx:for="{{visibleRules}}" wx:key="*this">
+      <text class="copy-line">{{item}}</text>
+    </block>
+  </view>
+</view>

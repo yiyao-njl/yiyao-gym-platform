@@ -1,0 +1,43 @@
+﻿# 环境变量密钥
+.env
+
+# Node.js
+admin-web/node_modules/
+admin-web/dist/
+
+# Maven/Java
+backend/**/target/
+backend/.m2/
+backend/META-INF/
+
+# IDE/编辑器
+backend/.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+
+# 操作系统
+Thumbs.db
+.DS_Store
+Desktop.ini
+
+# 日志
+*.log
+
+# Codex 内部文件
+.codex/
+.codex-tmp-docx/
+
+# 无关目录 (论文素材/脚本)
+temp/
+tools/
+论文修订输出/
+论文图/
+
+# 小程序私有配置
+伊幺体育/project.private.config.json
+
+# Python
+__pycache__/
+*.pyc

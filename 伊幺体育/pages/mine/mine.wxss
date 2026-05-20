@@ -1,0 +1,268 @@
+.mine-page {
+  color: #222222;
+  background: #f6f6f6;
+}
+
+.mine-hero {
+  position: relative;
+  padding: calc(96rpx + env(safe-area-inset-top)) 32rpx 28rpx;
+  background: #ffffff;
+}
+
+.profile-row {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  width: 112rpx;
+  height: 112rpx;
+  margin-right: 22rpx;
+  border-radius: 50%;
+  background: #edf5f1;
+}
+
+.profile-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.nickname {
+  display: block;
+  overflow: hidden;
+  color: #111111;
+  font-size: 38rpx;
+  font-weight: 800;
+  line-height: 54rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.phone {
+  display: block;
+  margin-top: 12rpx;
+  color: #8a8a8a;
+  font-size: 25rpx;
+}
+
+.profile-arrow {
+  color: #bbbbbb;
+  font-size: 52rpx;
+}
+
+.asset-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12rpx;
+  margin-top: 28rpx;
+}
+
+.asset-strip view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 92rpx;
+  border-radius: 14rpx;
+  background: #fbfbfb;
+}
+
+.asset-strip text:first-child {
+  color: #c6a05a;
+  font-size: 34rpx;
+  font-weight: 800;
+}
+
+.asset-strip text:last-child {
+  margin-top: 8rpx;
+  color: #555555;
+  font-size: 22rpx;
+}
+
+.level-panel {
+  margin: 24rpx 24rpx 0;
+  overflow: hidden;
+  border-radius: 18rpx;
+  background: #ffffff;
+  box-shadow: 0 10rpx 30rpx rgba(25, 43, 64, 0.04);
+}
+
+.level-card {
+  min-height: 218rpx;
+  padding: 30rpx;
+  background: linear-gradient(135deg, #ecf6cf 0%, #d8edbd 100%);
+}
+
+.level-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.level-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 44rpx;
+  padding: 0 18rpx;
+  color: #ffffff;
+  font-size: 24rpx;
+  font-weight: 800;
+  border-radius: 24rpx;
+  background: #9fbe5b;
+}
+
+.level-name {
+  margin-left: 16rpx;
+  color: #8dab46;
+  font-size: 34rpx;
+  font-weight: 800;
+}
+
+.current-tag {
+  height: 34rpx;
+  padding: 0 14rpx;
+  color: #7fa143;
+  font-size: 20rpx;
+  line-height: 34rpx;
+  border-radius: 18rpx;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.progress-wrap {
+  margin-top: 26rpx;
+}
+
+.progress-bar {
+  overflow: hidden;
+  height: 12rpx;
+  border-radius: 12rpx;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.progress-bar view {
+  height: 100%;
+  border-radius: 12rpx;
+  background: #5f7f28;
+}
+
+.progress-text,
+.expire {
+  display: block;
+  margin-top: 14rpx;
+  color: #222222;
+  font-size: 25rpx;
+}
+
+.gift-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  min-height: 122rpx;
+}
+
+.gift-row view {
+  padding: 26rpx 28rpx;
+}
+
+.gift-row view + view {
+  border-left: 1rpx solid #eeeeee;
+}
+
+.gift-title {
+  display: block;
+  color: #222222;
+  font-size: 30rpx;
+  font-weight: 800;
+}
+
+.gift-sub {
+  display: block;
+  margin-top: 10rpx;
+  color: #9b8759;
+  font-size: 22rpx;
+}
+
+.login-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 24rpx;
+  padding: 28rpx;
+}
+
+.login-card text {
+  flex: 1;
+  color: #555555;
+  font-size: 27rpx;
+}
+
+.login-card button {
+  width: 220rpx;
+  height: 64rpx;
+  color: #ffffff;
+  font-size: 25rpx;
+  line-height: 64rpx;
+  border-radius: 34rpx;
+  background: #12a86b;
+}
+
+.login-card button[disabled] {
+  color: rgba(255, 255, 255, 0.82);
+  background: #8ed9b8;
+}
+
+.coupon-section {
+  padding: 28rpx;
+}
+
+.coupon-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18rpx;
+}
+
+.coupon-mini {
+  min-height: 154rpx;
+  padding: 22rpx 14rpx;
+  text-align: center;
+  border: 1rpx solid #f0eadb;
+  border-radius: 10rpx;
+  background: #fffdf7;
+}
+
+.coupon-mini text:first-child {
+  display: block;
+  color: #b58935;
+  font-size: 28rpx;
+  font-weight: 800;
+}
+
+.coupon-mini text:last-child {
+  display: block;
+  margin-top: 22rpx;
+  color: #777777;
+  font-size: 22rpx;
+  line-height: 30rpx;
+}
+
+.service-card {
+  padding: 0 28rpx;
+}
+
+.service-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 96rpx;
+  color: #222222;
+  font-size: 30rpx;
+  border-bottom: 1rpx solid #eeeeee;
+}
+
+.service-row:last-child {
+  border-bottom: 0;
+}
+
+.service-row text:last-child {
+  color: #bbbbbb;
+  font-size: 46rpx;
+}
